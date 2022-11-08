@@ -1,0 +1,21 @@
+{
+  "name": "scouting-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://githnpm install express --saveub.com/frc-emotion/scouting-backend.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/frc-emotion/scouting-backend/issues"
+  },
+  "homepage": "https://github.com/frc-emotion/scouting-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
