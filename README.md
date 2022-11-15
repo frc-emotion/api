@@ -1,6 +1,6 @@
-# Scouting App Backend
+# ![Header Image](docs/assets/header.png)
 
-Backend web framework and API for the Team 2658 [Scouting App](https://github.com/frc-emotion/scouting-frontend). Built with [Express.js](https://expressjs.com/).
+This repository contains the backend code for the Team 2658 [Scouting App](https://github.com/frc-emotion/scouting-frontend). It is built using [express.js](https://expressjs.com) and [mongoose](https://mongoosejs.com/), with a [MongoDB](https://mongodb.com) database.
 
 ## Contribution Guidelines
 
