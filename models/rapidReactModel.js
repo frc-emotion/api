@@ -5,7 +5,7 @@ const rapidReactSchema = mongoose.Schema(
         competition: { type: String, required: true },
         matchNumber: { type: Number, required: true },
         teamNumber: { type: Number, required: true },
-        teamName: { type: String, required: true },
+        teamName: String,
         tarmac: Boolean,
         autoLower: Number,
         autoUpper: Number,
