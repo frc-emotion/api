@@ -60,6 +60,16 @@ API_URL = /api/v1
 
 **API_URL** sets the url under the domain that the api will run under. The app will see any request made to this path under the domain, but not one made to `[domain]/store`, for example.
 
+#### The Blue Alliance API
+
+You will need an API Key to access data from [The Blue Alliance](https://www.thebluealliance.com/). The TBA API is directly used in the backend, so make sure you generate an API Key and add it to your environment variables. If you don't know how to do this, you can find a guide [here](https://www.thebluealliance.com/apidocs#:~:text=api/v3.-,Authentication,by%20simply%20navigating%20to%20an%20API%20URL%20in%20your%20web%20browser,-Caching).
+
+```shell
+TBA_KEY = <key>
+```
+
+Replace **\<key>** with the key you generated from **The Blue Alliance**.
+
 #### Database Access
 
 The last environment variable is used to connect to the MongoDB Database. This example will teach you how to connect to the development database.
