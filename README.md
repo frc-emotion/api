@@ -28,17 +28,7 @@ To navigate to the newly cloned repository in your terminal use `cd scouting-bac
 
 ### Install Dependencies
 
-Before we run the server, we have to install its dependencies and libraries.
-
-#### Nodemon (optional, but strongly recommended)
-
-The development server is setup to run on Nodemon. Nodemon allows the server to reset every time  an edit is made to a file, allowing for easier development where you don't have to stop and restart your server every time you'd like to test it.
-
-In order to install nodemon, run `npm install -g nodemon`.
-
-#### npm dependencies
-
-The rest of the dependencies for the server are listed in the package.json file. To install these, navigate to the folder in a terminal window and run `npm i`.
+Before we run the server, we have to install its dependencies and libraries. In a terminal, run ```npm i```.
 
 ### Create Environment Variables
 
