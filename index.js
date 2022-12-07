@@ -9,7 +9,14 @@ const app = express();
 const games = [{ name: "rapidReact" }];
 
 // connect to the MongoDB database, configure in ./config/db.js
-connectDB();
+const gamesDb = connectDB(process.env.MONGO_URI + "games?retryWrites=true&w=majority");
+console.log("Successfully connected to games database.")
+const usersDb = connectDB(process.env.MONGO_URI + "users?retryWrites=true&w=majority");
+console.log("Successfully connected to users database.")
+
+global.gamesDb = gamesDb;
+global.usersDb = usersDb;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
