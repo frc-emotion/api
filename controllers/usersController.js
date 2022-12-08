@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersModel.js");
 
-// @desc Get Games
+// @desc Get Users
 // @route GET /api/users/
 // @access Private
 const getUsers = asyncHandler(async (req, res) => {
