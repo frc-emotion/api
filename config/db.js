@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDB = (dbUrl) => { 
     try {
-        const conn = mongoose.createConnection(dbUrl)
-        return conn
+        return mongoose.createConnection(dbUrl)
     } catch (error) {
         console.log(error);
         process.exit(1);
