@@ -43,7 +43,7 @@ for (let i = 0; i < games.length; i++) {
     );
 }
 
-app.use(`${api}`, require('./routes/usersRoutes.js'))
+app.use(`${api}/users`, require('./routes/usersRoutes.js'))
 
 app.use(errorHandler);
 
