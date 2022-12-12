@@ -90,11 +90,34 @@ const getUsers = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-	res.json({ message: "User deleted" });
+	const user = await User.findById(req.params.id);
+
+	if (!user) {
+		res.status(400);
+		throw new Error("User doesn't exist");
+	} else {
+		await user.remove();
+	}
+
+	res.status(200).json({
+		message: "User removed",
+		id: req.params.id,
+	});
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-	res.json({ message: "User updated" });
+	const user = await User.findById(req.params.id);
+
+	if (!user) {
+		res.status(400);
+		throw new Error("User doesn't exist");
+	}
+
+	const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+	});
+
+	res.status(200).json(updatedUser);
 });
 
 // generate JHT token
