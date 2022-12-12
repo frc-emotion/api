@@ -37,6 +37,7 @@ const register = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			isVerified: user.isVerified,
+			token: generateToken(user._id),
 		});
 	} else {
 		res.status(400).json({ message: "Invalid user data" });
@@ -45,23 +46,47 @@ const register = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
 	const { username, password } = req.body;
-    if (!username || !password) {
-        res.status(400).json({ message: "Please fill in all fields" });
-    }
+	if (!username || !password) {
+		res.status(400).json({ message: "Please fill in all fields" });
+	}
 
-    const user = await User.findOne({ username });
-    if (!user) {
-        res.status(400).json({ message: "User not found" });
-    }
+	const user = await User.findOne({ username });
+	const isMatch = await bcrypt.compare(password, user.password);
+	if (!user || !isMatch) {
+		res.status(400).json({ message: "Invalid credentials" });
+	}
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        res.status(400).json({ message: "Invalid credentials" });
-    }
+	if (user && isMatch) {
+		res.json({
+			_id: user.id,
+			firstname: user.firstname,
+			lastname: user.lastname,
+			username: user.username,
+			email: user.email,
+			isAdmin: user.isAdmin,
+			isVerified: user.isVerified,
+			token: generateToken(user._id),
+		});
+	}
 });
 
 const getMe = asyncHandler(async (req, res) => {
-	res.json({ message: "User authenticated" });
+	const { _id, firstname, lastname, username, email, isAdmin, isVerified } =
+		await User.findById(req.user.id);
+	res.status(200).json({
+		id: _id,
+		firstname,
+		lastname,
+		username,
+		email,
+		isAdmin,
+		isVerified,
+	});
+});
+
+const getUsers = asyncHandler(async (req, res) => {
+	const users = await User.find({});
+	res.json(users);
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -72,9 +97,16 @@ const updateUser = asyncHandler(async (req, res) => {
 	res.json({ message: "User updated" });
 });
 
+// generate JHT token
+const generateToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET);
+};
+
 module.exports = {
 	register,
 	login,
 	getMe,
+	getUsers,
 	deleteUser,
+	updateUser,
 };
