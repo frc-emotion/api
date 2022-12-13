@@ -12,11 +12,11 @@ const games = [{ name: "rapidReact" }];
 
 const gamesDb = connectDB(process.env.MONGO_URI + "games?retryWrites=true&w=majority")
 gamesDb.on('connected', () => {
-    console.log("Successfully connected to games database.")
+    console.log("Successfully connected to games database: " + `${gamesDb.host}`.green.underline)
   });
 const usersDb = connectDB(process.env.MONGO_URI + "users?retryWrites=true&w=majority");
 usersDb.on('connected', () => {
-    console.log("Successfully connected to users database.")
+    console.log("Successfully connected to users database: " + `${usersDb.host}`.green.underline)
 });
 
 global.gamesDb = gamesDb;
@@ -43,7 +43,7 @@ for (let i = 0; i < games.length; i++) {
     );
 }
 
-app.use(`${api}/users`, require('./routes/usersRoutes.js'))
+app.use(`${api}/users`, require('./routes/userRoutes.js'))
 
 app.use(errorHandler);
 
