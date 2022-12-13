@@ -31,4 +31,4 @@ const rapidReactSchema = mongoose.Schema(
 	}
 );
 
-module.exports = global.gamesDb.model('RapidReact', rapidReactSchema);;
+module.exports = global.gamesDb.model('RapidReact', rapidReactSchema);
