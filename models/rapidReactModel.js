@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const rapidReactSchema = mongoose.Schema(
 	{
-		user: {
+		/* user: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
 			ref: "User",
-		},
+		}, */
 		competition: { type: String, required: true },
 		matchNumber: { type: Number, required: true },
 		teamNumber: { type: Number, required: true },
