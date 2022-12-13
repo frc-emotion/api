@@ -4,7 +4,10 @@ const {
 	register,
 	login,
 	getMe,
+	deleteMe,
+	updateMe,
 	getUsers,
+	getUserById,
 	deleteUser,
 	updateUser,
 } = require("../controllers/userController");
@@ -14,23 +17,20 @@ const { protect, adminProtect } = require("../middleware/authMiddleware");
 router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
 
-// returns list of all users, must be admin to call
-router.get("/users", adminProtect, getUsers);
-// user actions by user id, must be admin to call
+// get, delete, and update users
+// getting lists of users requires admin permission
+router.route("/").get(adminProtect, getUsers);
 router
-	.route("/users/:id")
-	.get(adminProtect, getUsers)
-	.delete(adminProtect, deleteUser);
-// get list of admins, must be admin to call
-router.get("/users/:isAdmin", adminProtect, getUsers);
-// get list of verified users, must be admin to call
-router.get("/users/:isVerified", adminProtect, getUsers);
+	.route("/:id")
+	.get(adminProtect, getUserById)
+	.delete(adminProtect, deleteUser)
+	.put(adminProtect, updateUser);
 
 // user actions that can be called by user, requires bearer token
 router
 	.route("/me")
 	.get(protect, getMe)
-	.delete(protect, deleteUser)
-	.put(protect, updateUser);
+	.put(protect, updateMe)
+	.delete(protect, deleteMe);
 
 module.exports = router;

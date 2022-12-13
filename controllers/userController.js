@@ -51,6 +51,9 @@ const login = asyncHandler(async (req, res) => {
 	}
 
 	const user = await User.findOne({ username });
+	if (!user) {
+		res.status(400).json({ message: "User does not exist" });
+	}
 	const isMatch = await bcrypt.compare(password, user.password);
 	if (!user || !isMatch) {
 		res.status(400).json({ message: "Invalid credentials" });
@@ -84,35 +87,65 @@ const getMe = asyncHandler(async (req, res) => {
 	});
 });
 
+const deleteMe = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user.id);
+
+	if (!user) {
+		res.status(400);
+		throw new Error("User not found");
+	}
+
+	await User.findByIdAndRemove(req.user.id);
+
+	res.status(200).json({ message: "User deleted" });
+});
+
+const updateMe = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user.id);
+
+	if (!user) {
+		res.status(400);
+		throw new Error("User not found");
+	}
+
+	const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
+		new: true,
+	});
+
+	res.status(200).json(updatedUser);
+});
+
 const getUsers = asyncHandler(async (req, res) => {
 	const users = await User.find({});
 	res.json(users);
 });
 
-const deleteUser = asyncHandler(async (req, res) => {
+const getUserById = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id);
+	if (!user) {
+		res.status(400).json({ message: "User not found" });
+	} else {
+		res.json(user);
+	}
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+	const user = User.findById(req.params.id);
 
 	if (!user) {
 		res.status(400);
-		throw new Error("User doesn't exist");
-	} else {
-		await user.remove();
+		throw new Error("Requested user not found");
 	}
 
+	await User.findByIdAndRemove(req.params.id);
+
 	res.status(200).json({
-		message: "User removed",
+		message: "User deleted",
 		id: req.params.id,
 	});
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.params.id);
-
-	if (!user) {
-		res.status(400);
-		throw new Error("User doesn't exist");
-	}
-
 	const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 	});
@@ -129,7 +162,10 @@ module.exports = {
 	register,
 	login,
 	getMe,
+	deleteMe,
+	updateMe,
 	getUsers,
+	getUserById,
 	deleteUser,
 	updateUser,
 };
