@@ -7,7 +7,13 @@ const {
     deleteGame,
 } = require("../controllers/rapidReactController");
 
-module.exports = router;
+const { verifiedProtect } = require("../middleware/authMiddleware");
 
-router.route("/:competition").post(setGame).get(getGames);
-router.route("/:competition/:id").put(updateGame).delete(deleteGame);
+// all routes require user to be verified before making a request
+// authorization middleware checks for bearer token in header
+router.route("/").post(verifiedProtect, setGame).get(verifiedProtect, getGames);
+router.route("/:id").put(verifiedProtect, updateGame).delete(verifiedProtect, deleteGame);
+router.route("/:competition").post(verifiedProtect, setGame).get(verifiedProtect, getGames);
+router.route("/:competition/:id").put(verifiedProtect, updateGame).delete(verifiedProtect, deleteGame);
+
+module.exports = router;
