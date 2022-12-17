@@ -105,7 +105,7 @@ Give the user read and write permissions to the database. Then click **Add User*
 Finally, we need to connect our express app to the database. In the **.env** file, add the variable below, replacing **[username]** and **[password]** with the username and password associated with the database account you just created.
 
 ```shell
-MONGO_URI = "mongodb+srv://[username]:[password]@development.hh3ieam.mongodb.net/games?retryWrites=true&w=majority"
+MONGO_URI = "mongodb+srv://[username]:[password]@development.hh3ieam.mongodb.net/"
 ```
 
 ### Run Server
