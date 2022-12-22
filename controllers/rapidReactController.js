@@ -5,7 +5,7 @@ const fetch = (...args) =>
 
 async function create(req, nickname) {
 	return await Game.create({
-		competition: req.params.competition,
+		competition: req.params.competition ? req.params.competition : req.body.competition ? req.body.competition : null,
 		matchNumber: req.body.matchNumber,
 		teamNumber: req.body.teamNumber,
 		teamName: nickname,
