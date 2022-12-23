@@ -13,7 +13,5 @@ const { verifiedProtect } = require("../middleware/authMiddleware");
 // authorization middleware checks for bearer token in header
 router.route("/").post(verifiedProtect, setGame).get(verifiedProtect, getGames);
 router.route("/:id").put(verifiedProtect, updateGame).delete(verifiedProtect, deleteGame);
-router.route("/:competition").post(verifiedProtect, setGame).get(verifiedProtect, getGames);
-router.route("/:competition/:id").put(verifiedProtect, updateGame).delete(verifiedProtect, deleteGame);
 
 module.exports = router;
