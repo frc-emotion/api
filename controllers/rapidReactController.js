@@ -30,7 +30,7 @@ async function create(req, nickname) {
 // @route GET /api/games/{games[i].name}/
 // @access Private
 const getGames = asyncHandler(async (req, res) => {
-	const games = await Game.find({ competition: req.params.competition });
+	const games = await Game.find({ });
 	res.status(200).json(games);
 });
 
