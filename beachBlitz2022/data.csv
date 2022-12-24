@@ -1,0 +1,195 @@
+matchNumber,teamNumber,tarmac,autoLower,autoUpper,teleopLower,teleopUpper,cycleTime,mainShots,climbScore,defensive,humanShot,rankingPoints,score,won,comments
+6,8,Yes,0,0,0,11,High medium,Behind the line,6,No,No,NONE,75,WIN,Rotating turret and good shots 
+19,8,Yes,0,5,,11,30 sec,outside line,10,No,Yes,HANGAR BONUS,95,WIN,
+27,8,Yes,0,4,,6,Medim,Mid,0,Yes,No,BOTH,127,WIN,Fell hard
+6,8,Yes,0,2,0,11,Medium ,Close to the line,10,No,No,NONE,75,WIN,
+9,294,Yes,0,2,0,3,Medium,Behind the line,0,Yes,,NONE,48,LOSE,Good trajectories but it kept bouncing out
+15,294,Yes,0,2,0,11,<15 secs,middle,0,No,Yes,NONE,32,LOSE,
+34,294,Yes,0,1,0,0,Slow,Outside Line,0,Yes,,NONE,58,WIN,
+46,294,Yes,0,2,0,9,"quick, 10-15 secs",outer line or back,0,No,Yes,NONE,62,LOSE,
+42,294,Yes,0,0,0,7,Fast,Outside lines,0,No,,NONE,71,WIN,
+2,597,Yes,0,,,,,,6,No,No,NONE,57,WIN,
+21,597,No,,2,,5,Medium,Outer line ,6,No,No,HANGAR BONUS,78,LOSE,
+28,597,No,1,0,0,2,Slow,Outside Line,6,No,,NONE,64,WIN,
+42,597,No,0,0,0,7,10 sec,Corner ,4,No,No,NONE,40,LOSE,
+14,597,No,0,0,4,3,Slow,Inside tarmac and against wall inside tarmac,0,No,No,BOTH,91,LOSE,"Both ranking points, average playing, shoots in both lower and upper. "
+35,597,No,2,0,0,3,Mid,Close,4,Yes,No,NONE,44,WIN,
+34,599,No,0,0,,1,NA,NA,,Yes,,NONE,58,WIN,
+12,599,No,0,0,0,8,Medium,Behind tarmac line,0,No,No,NONE,36,LOSE,"Swerve drive and skillful driving, good intake"
+17,599,No,0,0,0,5,Slow,On line,0,No,No,HANGAR BONUS,95,WIN,
+44,599,No,0,0,0,0,None,None,0,Yes,No,NONE,6,LOSE,
+12,687,Yes,0,0,0,0,No intake,None,6,Yes,No,HANGAR BONUS,0,LOSE,Very close to getting multiple fouls
+18,687,No,0,2,0,0,didn’t shoot,didnt,0,Yes,No,NONE,79,WIN,
+41,687,Yes,0,2,0,0,None,None,0,Yes,No,NONE,58,LOSE,
+30,691,Yes,1,0,0,0,very quick but was getting blocked ,both near and far ,4,No,No,HANGAR BONUS,75,WIN,
+12,691,Yes,1,0,4,1,30-45 secs,close,0,No,No,HANGAR BONUS,89,WIN,"had some issues shooting - shooting was slow, many shots were weaker than others resulting in 4 lower hub score compared to 1 upper hub"
+20,691,No,2,,,4,Slow,Outer wall,6,No,No,HANGAR BONUS,82,LOSE,
+25,691,Yes,1,0,1,4,Medium,Outside line,6,No,,NONE,35,LOSE,
+30,691,Yes,1,0,0,0,Slow,Against hub,6,No,No,HANGAR BONUS,54,LOSE,Unable to shoot long range
+6,696,Yes,0,4,0,2,7 sec ,outside tarmac ,4,No,No,NONE,75,WIN,almost fell on its side multiple times 
+14,696,Yes,0,2,0,13,<12 sec,far - extremely accurate at long range,6,No,Yes,BOTH,91,LOSE,both ranking points
+19,696,Yes,0,2,0,6,12 sec ,side ,15,No,No,NONE,95,WIN,
+26,696,Yes,0,4,0,6,Fast,Mid,0,Yes,No,CARGO BONUS,102,LOSE,
+21,1138,Yes,0,1,0,1,Slow,Outside line,15,No,,HANGAR BONUS,78,LOSE,
+10,1138,Yes,0,2,0,4,Medium ,Mid range,10,No,No,NONE,62,LOSE,
+24,1138,Yes,0,0,0,11,Slow,Behind the line,0,No,No,NONE,42,LOSE,"Average robot, nothing special"
+13,1160,Yes,2,0,0,0,n/a,n/a,0,No,No,HANGAR BONUS,54,LOSE,"all shots were close, barely bouncing off. at 1:10 left in match the robot stopped moving"
+4,1160,No,0,0,0,0,N/A,,0,No,No,NONE,49,LOSE,Choppy movement and inconsistent shots which always missed
+20,1160,Yes,0,1,0,0,None,None,0,Yes,No,CARGO BONUS,95,WIN,
+26,1160,Yes,0,1,0,4,Medium,Outside Line,0,No,,BOTH,127,WIN,Accurate shots
+5,1197,Yes,0,2,0,,Mid,Behind/on the line,0,No,No,NONE,77,WIN,"Has a turret and swerve drive, not defensive though"
+5,1197,Yes,0,2,0,,Medium ,On the line,0,No,No,NONE,77,WIN,"Went for mainly shots, had good aim "
+10,1197,Yes,1,1,0,6,Medium,Behind the line,6,No,,NONE,79,WIN,Accurate shots
+22,1197,Yes,0,2,0,16,Fast,Outside line,0,No,,CARGO BONUS,92,WIN,Accuracy near perfect
+31,1197,Yes,,2,,9,,all over,6,No,Yes,HANGAR BONUS,93,LOSE,
+18,1197,Yes,0,3,0,9,Fast,On to out of line,6,No,No,HANGAR BONUS,79,WIN,
+39,1197,Yes,0,0,0,4,Mid,Close,6,No,No,HANGAR BONUS,77,LOSE,
+4,1836,No,0,0,0,0,slow,didn’t shoot ,0,Yes,No,NONE,68,WIN,robot stayed in place and was moving in short bursts 
+10,1836,Yes,0,0,0,0,N/A,N/A,0,No,No,NONE,62,LOSE,"Started climb early after not shooting, but did not manage to climb, robot might need fixing "
+15,1836,Yes,,,,,N/A,N/A,0,Yes,,HANGAR BONUS,99,WIN,Ball kept getting stuck when trying to grab ball. Started climbing early
+23,1836,Yes,0,0,0,0,NA,NA,6,No,,HANGAR BONUS,38,LOSE,Ball stuck most of the time
+32,1836,Yes,,1,0,0,NA,NA,0,Yes,,NONE,59,WIN,Collected wrong colored balls. Attempted to climb
+37,1836,No,1,0,0,0,Didn’t shoot,Didn’t ,0,No,No,NONE,48,LOSE,Broken 
+4,2122,Yes,0,1,0,0,Slow,Behind the line,0,No,,NONE,49,LOSE,Got stuck 
+8,2122,Yes,0,4,0,12,Fast,Far,10,No,No,NONE,62,LOSE,"Grabbed blue ball once, but moved fast and shot fast"
+16,2122,Yes,0,2,2,9,Fast,,0,No,No,NONE,62,LOSE,
+22,2122,Yes,,2,,10,Fast,Outer ,0,No,No,CARGO BONUS,92,WIN,
+35,2122,Yes,0,1,0,4,Medium,Outside Line,15,No,,NONE,42,LOSE,
+43,2122,Yes,0,1,0,3,Slow,Outside lines,15,No,No,NONE,51,WIN,
+8,2122,Yes,,2,,8,12,Outer ,10,No,No,HANGAR BONUS,62,LOSE,
+27,2637,Yes,1,3,,11,15 sec max,outer line,6,,,NONE,64,WIN,
+7,2637,Yes,,2,1,4,10-12 secs,entry corner,15,No,Yes,HANGAR BONUS,82,WIN,inconsistent shooter 
+11,2637,Yes,0,0,0,9,Fast,Far,0,No,No,NONE,61,LOSE,"Fell over after moving too fast, but had great shooting initially"
+31,2658,No,0,0,0,0,None,None,0,Yes,No,NONE,105,WIN,
+21,2658,Yes,0,2,,7,"10-30 secs, inconsistent",close,0,No,No,HANGAR BONUS,78,LOSE,climb broken
+12,2659,Yes,0,1,1,10,Fast,Outside of line,15,No,,HANGAR BONUS,89,WIN,
+16,2659,Yes,1,0,0,3,Medium,Within line,15,Yes,,HANGAR BONUS,52,LOSE,
+34,2659,Yes,0,2,1,12,Medium fast,Inside tarmac,15,No,No,NONE,58,WIN,
+44,2659,Yes,0,2,0,11,12 sec,Base ,15,No,Yes,BOTH,105,WIN,
+26,2659,Yes,,2,0,2,Pretty fast,outside lines ,0,No,No,NONE,38,LOSE,
+18,3128,Yes,0,2,,1,n/a,close,15,No,No,HANGAR BONUS,77,LOSE,seemed like there was an issue w shooting mechanism for this game
+30,3128,Yes,0,0,3,0,Middle ,Outer tarmac ,15,No,No,HANGAR BONUS,54,LOSE,
+24,3128,Yes,,4,,9,Medium,Outer,0,No,No,NONE,77,WIN,
+7,3128,Yes,0,0,0,1,Half a minute per shot,Within lines,15,No,,HANGAR BONUS,82,WIN,Trajectories were off but was fast at climbing
+14,3128,Yes,0,3,0,3,2,inner,4,No,No,HANGAR BONUS,96,WIN,
+30,3128,Yes,0,0,1,1,Medium,Within line,15,No,,HANGAR BONUS,54,LOSE,
+7,3128,Yes,0,0,0,4,Medium fast,Inside tarmac,15,No,No,HANGAR BONUS,82,WIN,Always made one and missed one. 
+23,3255,Yes,0,2,0,12,Medium ,Mostly tarmac ,15,No,No,HANGAR BONUS,92,WIN,Good and can score from any place on the field
+31,3255,Yes,,3,,11,Fast,Home turf,15,No,No,HANGAR BONUS,105,WIN,Good game with a win
+3,3255,Yes,0,,,,,right,6,No,No,NONE,63,WIN,
+12,3255,Yes,0,3,1,5,Medium fast,Launch pad and outside tarmac,6,No,No,HANGAR BONUS,89,WIN,Kept getting pinned but had really good shots. Turret shooter. 
+19,3255,Yes,0,2,0,7,Medium,On tarmac,6,Yes,No,NONE,54,LOSE,Good at scoring on the upper hub
+4,3309,Yes,2,,,,Medium,Behind line,,No,No,CARGO BONUS,68,WIN,Stoped for the last ten seconds 
+11,3309,Yes,0,1,0,6,1,Outside the tarmac,6,No,No,HANGAR BONUS,94,WIN,"Swerve drive, their shooting spun, half way on the 6 and 10. "
+24,3309,Yes,,2,,5,30sec,middle,15,No,Yes,NONE,77,WIN,
+31,3309,Yes,0,1,0,4,Medium,Near safety pad,15,No,,HANGAR BONUS,93,LOSE,Can maneuver well
+31,3309,Yes,0,1,0,4,Mid,Tarmac,6,Yes,No,HANGAR BONUS,93,LOSE,
+34,3473,Yes,0,0,0,0,None,None,0,Yes,No,NONE,41,LOSE,Broken
+6,3473,Yes,0,0,0,1,Around 1 ball / 20 s. Consistent,Within line,0,No,,NONE,32,LOSE,
+14,3473,Yes,0,1,0,3,Fast,Within lines,,No,,BOTH,91,LOSE,Balls kept getting stuck in launcher + CARGO BONUS
+38,3473,No,0,0,0,0,NA,NA,0,No,,HANGAR BONUS,80,WIN,Did not move entire match
+6,3473,Yes,0,2,0,5,Medium speed ,Inside tarmac; against the wall ,0,Yes,No,NONE,32,LOSE,They were pretty fast at getting balls but always shot from the same spot. Almost got 6 points for climb. 
+21,3473,Yes,0,2,0,4,medium,outer,0,No,No,BOTH,81,WIN,
+1,3476,Yes,,4,,,Fast,High ,15,No,No,NONE,67,WIN,
+11,3476,Yes,0,0,0,12,10 secs max,"all over the place, but their shots consistently went in",15,No,Yes,HANGAR BONUS,94,WIN,
+4,3647,Yes,0,2,,2,,back corner/human player,0,Yes,Yes,NONE,49,LOSE,alliance had one robot down for ~33% of game
+9,3647,No,0,2,,2,,inconsistent,0,No,Yes,NONE,48,LOSE,"defended half the time, other half missed >85% of its attempted shots"
+26,3647,Yes,0,0,0,10,Fast,Outside line,0,No,,CARGO BONUS,102,LOSE,
+21,3647,Yes,0,2,,6,Fast,Far,0,No,No,HANGAR BONUS,81,WIN,Strong robot but overshot a few times during the later parts of the game
+7,3952,Yes,0,0,0,1,Slow,Behind the line,10,No,No,NONE,42,LOSE,"Shot too strong, always shooting over the hub, also fouled twice by grabbing blue balls as red team, and had slow, choppy movement"
+25,3952,Yes,0,0,0,0,slow,nowhere,15,No,No,NONE,43,WIN,
+39,3952,Yes,0,0,0,0,NA,NA,15,No,,HANGAR BONUS,90,WIN,Ball got stuck in intake
+22,4079,Yes,,2,,2,,far,6,Yes,No,CARGO BONUS,92,WIN,
+3,4123,Yes,5,2,0,1,10 sec,inside box ,0,No,No,NONE,39,LOSE,
+13,4123,Yes,1,0,7,0,Medium,Inside tarmac against wall,6,No,No,HANGAR BONUS,54,LOSE,Average
+32,4123,Yes,1,0,4,0,Medium,Up against hub,6,No,No,NONE,41,LOSE,
+37,4123,Yes,2,0,4,0,Slow,Within line,6,No,,HANGAR BONUS,49,WIN,
+16,4123,Yes,0,0,3,0,Slow medium ,Inside tarmac; against wall,6,Yes,No,HANGAR BONUS,52,LOSE,They were average. Helped with defense at the end. 
+3,4141,No,0,0,0,0,n/a,n/a,0,No,No,NONE,63,WIN,
+8,4141,Yes,1,0,0,0,No shots made except for first 15s,Within line (attempted),0,Yes,,NONE,63,WIN,Defended against own teammate. One ball was stuck the entire time
+20,4141,Yes,0,1,0,0,NA,NA,0,No,,HANGAR BONUS,82,LOSE,Robot wasn’t moving much 
+24,4141,Yes,0,2,0,0,it didn’t shoot ,,0,No,No,NONE,42,LOSE,it got a blue ball (it was red team) and it didn’t do anything the whole game besides the beginning. 
+18,4201,Yes,,1,,6,Medium ,Outer,4,No,No,HANGAR BONUS,79,WIN,
+2,4201,Yes,0,1,0,1,Medium,Behind the line,0,No,No,NONE,57,WIN,Fast
+10,4201,Yes,0,1,0,8,9 sec ,right side by bars ,0,No,No,NONE,62,LOSE,
+33,4201,Yes,0,2,1,15,quick,outer line,0,No,Yes,BOTH,117,WIN,
+24,4276,Yes,0,1,0,0,Slow,Outside line,6,No,,NONE,77,WIN,Collected and threw wrong ball
+15,4276,Yes,,2,0,5,Slow,On line,0,Yes,No,NONE,32,LOSE,
+33,4276,Yes,0,1,0,0,NA,NA,,Yes,,BOTH,117,WIN,Played defensively
+40,4276,Yes,0,2,0,1,Slow,Outside line,0,No,,NONE,55,WIN,
+16,4322,Yes,0,0,0,0,N/A,N/A,15,Yes,No,HANGAR BONUS,62,WIN,"Has intake on both sides, not in front or back. Tried to shoot but was not able to, and so it switched to defense "
+3,4322,Yes,0,0,0,5,15 secs,inconsistent,10,No,Yes,NONE,63,WIN,"shots were inconsistent, made about 40% of shots attempted"
+36,4322,Yes,0,2,0,0,NA,NA,0,Yes,,HANGAR BONUS,104,WIN,Robot played defensively for the most part but fell over towards end of match
+7,4738,Yes,0,1,0,5,Slow,Far away,0,No,No,NONE,42,LOSE,Missed half shots
+13,4738,Yes,0,2,0,12,Medium-Fast,Far away (near hangar),4,No,No,HANGAR BONUS,93,WIN,Turreted shooter and amazing accuracy
+18,4738,Yes,0,1,0,7,Fast,Anywhere ,6,No,No,HANGAR BONUS,77,LOSE,Could have made more but they got defended
+5,4999,Yes,1,0,0,1,Around 1 ball / 10 s at first but then no shots,Close to hub,6,Yes,,HANGAR BONUS,61,LOSE,
+19,4999,Yes,0,1,0,0,didn’t shoot ,didn’t ,6,Yes,No,NONE,54,LOSE,
+24,4999,Yes,0,0,0,0,0,0,0,Yes,No,NONE,42,LOSE,
+32,4999,Yes,0,2,0,,fast,against hub,6,Yes,No,NONE,41,LOSE,
+41,4999,Yes,0,2,0,0,NA,NA,6,Yes,,HANGAR BONUS,66,WIN,Plays defensively
+11,5124,Yes,0,0,0,2,Slow,On the lines,0,No,,HANGAR BONUS,94,WIN,Did not try to climb
+19,5124,Yes,0,0,0,0,NA,Outside line,0,Yes,,HANGAR BONUS,95,WIN,
+26,5124,Yes,0,0,0,0,was defensive ,Did not shoot ,0,Yes,No,NONE,115,WIN,
+5,5199,Yes,0,2,0,10,10 seconds,just outside of starting lines,15,No,Yes,HANGAR BONUS,61,LOSE,consistently got only half of shots in
+8,5199,Yes,0,1,0,10,"10-20 secs, inconsistent b/c of red alliance defensive robots",entry corner,15,No,Yes,NONE,63,WIN,
+15,5199,Yes,0,0,0,12,10sec ,back,15,No,No,HANGAR BONUS,99,WIN,
+26,5199,No,0,2,0,3,10 sec ,around tarmac ,15,No,No,HANGAR BONUS,115,WIN,
+36,5199,Yes,0,2,0,8,9sec,Back tarmac ,15,Yes,No,HANGAR BONUS,86,LOSE,
+15,5857,Yes,1,0,0,3,Slow,Outer,0,No,No,HANGAR BONUS,99,WIN,
+30,5857,Yes,0,2,1,3,long,outer line,6,No,No,HANGAR BONUS,54,LOSE,
+10,5857,Yes,0,2,0,1,,,0,No,No,NONE,79,WIN,robot broken and/or drivers inexperienced
+7,5957,Yes,0,2,0,2,16 sec ,bars ,0,No,No,NONE,42,LOSE,didn’t move for about 30 seconds 
+18,6072,Yes,0,0,0,0,NA,NA,0,Yes,,HANGAR BONUS,79,WIN,Grabbed the wrong ball color.
+5,6072,Yes,1,0,0,1,Slow,Outside tarmac,0,No,No,HANGAR BONUS,61,LOSE,Extremely slow and slow cycle time. Had a hard time picking up balls. 
+8,6072,Yes,0,2,1,1,Super slow,Really close,0,No,No,NONE,62,LOSE,Bad are reloading 
+39,6072,Yes,0,2,1,0,60 sec,Tarmac,0,No,No,NONE,43,LOSE,Very little to no control of robot. Driving and aiming is very bad
+5,6072,Yes,2,0,0,0,5,Outer,0,No,No,HANGAR BONUS,61,LOSE,
+28,6220,Yes,,1,,21,Fast,Home turf ,0,No,Yes,NONE,63,LOSE,Great performance 
+8,6220,Yes,0,1,0,4,Slow,behind  the line,0,No,Yes,NONE,10,WIN,
+20,6220,Yes,0,2,0,9,Medium ,In allied territory ,0,No,No,CARGO BONUS,95,WIN,It can shoot almost from anywhere in the field 
+31,6220,Yes,,1,,7,Slow,Outside of circle,0,No,,HANGAR BONUS,93,LOSE,
+28,6220,Yes,0,2,0,6,Very Fast ,Outside the lines ,0,No,No,NONE,63,LOSE,
+31,6255,Yes,,2,,11,Slow,Home turf,0,No,No,HANGAR BONUS,93,LOSE,They took around 1 or 2 red cargo instead the blue cargo.
+1,6560,No,,,0,0,Slow,Far away,10,No,No,CARGO BONUS,97,WIN,Mainly shot upper
+14,6560,Yes,,1,,8,Medium,Outer,15,No,No,HANGAR BONUS,93,WIN,
+19,6560,Yes,0,2,0,5,Medium fast,Anywhere; outside tarmac,15,No,No,HANGAR BONUS,95,WIN,Other team was down by a robot. 
+2,6995,Yes,0,,,,Slow,Far,10,No,No,NONE,58,WIN,
+13,6995,Yes,0,1,0,0,Slow,Outside of line,15,No,,HANGAR BONUS,54,LOSE,Gave up after a few shots and began climbing
+17,6995,Yes,0,4,0,10,14 sec ,side ,15,No,No,HANGAR BONUS,95,WIN,
+32,6995,Yes,0,2,,2,quick,,15,No,,NONE,59,WIN,started climbing with 1:20 left
+5,7042,Yes,0,6,0,0,13 sec,tarmac ,4,No,No,NONE,77,WIN,
+5,7042,No,0,2,,6,8 seconds,Outer line,6,No,No,NONE,77,WIN,
+8,7042,Yes,0,2,0,4,8 sec ,tarmac ,15,No,No,NONE,50,WIN,
+16,7042,Yes,0,1,0,4,22 sec ,corner ,0,No,No,NONE,62,WIN,
+29,7042,Yes,0,2,,4,,,15,No,,NONE,83,WIN,robot wasnt moving for 45 seconds out of game
+17,7157,Yes,0,2,0,31,10 secs max,close,6,No,No,CARGO BONUS,90,LOSE,"extremely consistent shooting, scored vast majority of hub points for team"
+8,7157,Yes,0,1,0,0,didn’t shoot ,didn’t ,0,Yes,No,NONE,62,LOSE,
+9,7230,Yes,,2,0,0,None,Close,0,Yes,No,NONE,50,WIN,
+16,7230,Yes,1,0,1,0,n/a,close,6,Yes,No,HANGAR BONUS,52,LOSE,Can only shoot to the lower hub
+25,7230,Yes,2,0,1,0,,,,Yes,No,NONE,35,LOSE,defended entire game
+40,7230,Yes,0,0,2,0,50 sec ,Tarmac ,0,Yes,No,NONE,24,LOSE,
+10,7447,No,0,0,2,0,Slow,Tarmac,0,No,Yes,NONE,2,WIN,
+29,7447,No,0,0,0,0,NA,NA,0,No,,NONE,83,WIN,Ball collector broken
+6,7447,No,0,1,0,2,n/a,,0,Yes,No,NONE,32,LOSE,
+17,7447,No,0,0,1,0,So slow not good,Against the wall in tarmac,0,Yes,No,CARGO BONUS,90,LOSE,They got carried. Couldn’t score. 
+14,8006,Yes,0,0,0,2,Fast,Tarmac,15,No,No,HANGAR BONUS,19,WIN,Poor intake design
+17,8006,Yes,0,0,0,,NA,NA,0,Yes,,CARGO BONUS,90,LOSE,Defensive entire match
+25,8006,Yes,0,0,0,0,N/A,N/A,0,Yes,No,NONE,43,WIN,Very defensive robot 
+3,8006,No,0,0,0,0,N/A,N/A,6,Yes,No,NONE,39,LOSE,"One climb arm struggled to go up at one point, mainly after defensive"
+25,8006,Yes,0,0,0,0,?,?,0,Yes,No,NONE,43,WIN,
+51,8,Yes,0,4,0,0,Fast,Outside tarmac,0,No,No,NONE,28,LOSE,
+51,6072,Yes,0,1,0,0,long,nowhere,0,Yes,No,NONE,28,LOSE,
+51,1138,Yes,0,2,0,0,N/a,N/a,6,Yes,No,NONE,61,WIN,Super strong defense. Some penalties 
+52,4079,No,1,3,0,0,Long,Nowherw,0,No,No,HANGAR BONUS,111,WIN,
+52,3255,Yes,0,0,0,7,Medium,Up against the hub ,15,No,No,HANGAR BONUS,87,LOSE,Sometimes they randomly shot 
+53,2658,Yes,,3,0,0,Fast,No,4,No,No,HANGAR BONUS,53,LOSE,Broke somehow but good auto… I guess software is fine
+54,3647,Yes,0,2,0,9,fast,outer,0,No,No,HANGAR BONUS,88,WIN,
+55,599,No,0,2,,10,15 secs,outer line,0,No,Yes,CARGO BONUS,84,WIN,
+55,599,Yes,0,1,0,7,Medium,Outside line,0,No,,CARGO BONUS,84,WIN,
+57,4079,Yes,0,1,0,4,Slow,Outside tarmac,0,No,No,NONE,40,LOSE,Slow at lining up for shot
+57,4079,Yes,,1,0,2,Slow,Outside,0,No,No,NONE,40,LOSE,
+59,599,No,0,0,,3,,Outside,0,No,,NONE,54,LOSE,
+69,7447,No,0,0,0,0,N/A,N/A,4,Yes,,HANGAR BONUS,47,LOSE,didn’t do much
+70,687,No,0,0,0,0,NA,NA,6,Yes,,HANGAR BONUS,43,LOSE,"very defensive, hit other robots. no shots"
+70,6072,Yes,0,1,3,1,15 (around),Tarmac/corners,0,No,Yes,CARGO BONUS,43,LOSE,
