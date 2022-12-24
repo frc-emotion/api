@@ -1,2 +1,3 @@
+apt install npm
 npm i
-npm run start
+nohup npm start &
