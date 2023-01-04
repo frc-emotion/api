@@ -21,7 +21,7 @@ router.post("/login", login); // login returns jwt to user
 // getting lists of users requires admin permission
 router.route("/").get(adminProtect, getUsers);
 router
-	.route("/:id")
+	.route("/id/:id")
 	.get(adminProtect, getUserById)
 	.delete(adminProtect, deleteUser)
 	.put(adminProtect, updateUser);
