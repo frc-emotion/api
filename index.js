@@ -19,6 +19,7 @@ gamesDb.on("connected", () => {
 			`${gamesDb.host}`.green.underline
 	);
 });
+
 const usersDb = connectDB(
 	process.env.MONGO_URI + "users?retryWrites=true&w=majority"
 );
@@ -29,8 +30,19 @@ usersDb.on("connected", () => {
 	);
 });
 
+const seasonsDb = connectDB(
+	process.env.MONGO_URI + "seasons?retryWrites=true&w=majority"
+);
+seasonsDb.on("connected", () => {
+	console.log(
+		"Successfully connected to seasons database: " +
+			`${seasonsDb.host}`.green.underline
+	);
+});
+
 global.gamesDb = gamesDb;
 global.usersDb = usersDb;
+global.seasonsDb = seasonsDb;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -53,6 +65,7 @@ for (let i = 0; i < games.length; i++) {
 }
 
 app.use(`${api}/users`, require("./routes/userRoutes.js"));
+app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
 
 app.use(errorHandler);
 
