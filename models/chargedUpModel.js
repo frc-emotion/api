@@ -26,6 +26,8 @@ const chargedUpSchema = mongoose.Schema(
 		teleopEngage: Boolean,
 		parked: Boolean,
 		chargeStation: Number,
+		didBreak: Boolean,
+		penaltyCount: Number,
 		score: { type: Number, required: true },
 		won: { type: Boolean, required: true },
 		tied: { type: Boolean, required: true },

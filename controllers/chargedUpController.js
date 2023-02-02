@@ -22,6 +22,8 @@ async function create(req) {
 		teleopEngage: req.body.teleopEngage,
 		parked: req.body.parked,
 		chargeStation: req.body.chargeStation,
+		didBreak: req.body.didBreak,
+		penaltyCount: req.body.penaltyCount,
 		score: req.body.score,
 		won: req.body.won,
 		tied: req.body.tied,
