@@ -56,13 +56,12 @@ const deleteCompetition = asyncHandler(async (req, res) => {
 });
 
 const createSeason = asyncHandler(async (req, res) => {
-	const season = new Season({
+	const season = await Season.create({
 		year: req.body.year,
 		name: req.body.name,
 		competitions: req.body.competitions,
 	});
-	const createdSeason = await season.save();
-	res.status(201).json(createdSeason);
+	res.status(201).json(season);
 });
 
 const updateSeason = asyncHandler(async (req, res) => {
