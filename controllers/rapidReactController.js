@@ -37,6 +37,7 @@ const getGames = asyncHandler(async (req, res) => {
 		? await Game.findById(req.params.id)
 		: await Game.find(req.query);
 
+	console.log(req.headers.authorization);
 	res.status(200).json(games);
 });
 
