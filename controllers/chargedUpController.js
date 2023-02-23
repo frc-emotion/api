@@ -3,6 +3,7 @@ const ChargedUp = require("../models/chargedUpModel.js");
 
 async function create(req) {
 	return await ChargedUp.create({
+		editHistory: req.edit,
 		competition: req.body.competition,
 		matchNumber: req.body.matchNumber,
 		teamNumber: req.body.teamNumber,
@@ -49,6 +50,8 @@ const updateGame = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error("Game not found");
 	}
+	game.editHistory.splice(0, 0, req.edit);
+	req.body.editHistory = game.editHistory;
 	const updatedGame = await ChargedUp.findByIdAndUpdate(
 		req.params.id,
 		req.body,

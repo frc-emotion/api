@@ -5,6 +5,7 @@ const fetch = (...args) =>
 
 async function create(req, nickname) {
 	return await Game.create({
+		editHistory: req.edit,
 		competition: req.body.competition,
 		matchNumber: req.body.matchNumber,
 		teamNumber: req.body.teamNumber,
@@ -81,7 +82,8 @@ const updateGame = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error("Game not found");
 	}
-
+	game.editHistory.splice(0, 0, req.edit[0]);
+	req.body.editHistory = game.editHistory;
 	const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 	});
