@@ -11,20 +11,20 @@ const {
 	deleteSeason,
 } = require("../controllers/seasonController");
 
-const { verifiedProtect, adminProtect } = require("../middleware/authMiddleware");
+const { adminProtect } = require("../middleware/authMiddleware");
 
 router
 	.route("/")
 	.post(adminProtect, createSeason)
-	.get(verifiedProtect, getSeasons);
+	.get(getSeasons);
 router
 	.route("/:year")
-	.get(verifiedProtect, getSeasonByYear)
+	.get(getSeasonByYear)
 	.put(adminProtect, updateSeason)
 	.delete(adminProtect, deleteSeason);
 router
 	.route("/:year/competitions")
-	.get(verifiedProtect, getSeasonCompetitions)
+	.get(getSeasonCompetitions)
 	.post(adminProtect, createCompetition)
 	.delete(adminProtect, deleteCompetition);
 
