@@ -43,9 +43,19 @@ seasonsDb.on("connected", () => {
 	);
 });
 
+const scoutingDb = connectDB(process.env.MONGO_URI + `scouting${connAppend}`);
+scoutingDb.on("connected", () => {
+	console.log(
+		"Successfully connected to scouting database: " +
+			`${scoutingDb.host}`.green.underline
+	);
+});
+
 global.gamesDb = gamesDb;
 global.usersDb = usersDb;
 global.seasonsDb = seasonsDb;
+global.scoutingDb = scoutingDb;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -69,6 +79,7 @@ for (let i = 0; i < games.length; i++) {
 
 app.use(`${api}/users`, require("./routes/userRoutes.js"));
 app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
+app.use(`${api}/scouting`, require("./routes/inPitRoutes.js"));
 
 app.use(errorHandler);
 

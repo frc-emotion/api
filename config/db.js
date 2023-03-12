@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+mongoose.set('debug', true);
 const connectDB = (dbUrl) => { 
     try {
         return mongoose.createConnection(dbUrl)
