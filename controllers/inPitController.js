@@ -51,10 +51,11 @@ const editProfile = asyncHandler(async (req, res) => {
 					}
 					if (!(all.includes(value.content))){
 						const updated = await inPit.findOneAndUpdate({teamNumber:req.body.teamNumber}, {$push: {[key]: value}}, {new: true});
-						updated[key].sort(function(a, b) {
-							return (a.timestamp < b.timestamp) ? -1 : ((a.timestamp > b.timestamp) ? 1 : 0);
+						const copy = updated[key];
+						copy.sort(function(a, b) {
+							return new Date(a.timestamp) - new Date(b.timestamp);
 						}).reverse();
-						await inPit.update({teamNumber:req.body.teamNumber}, {[key]: updated.key})
+						await inPit.update({teamNumber:req.body.teamNumber}, {[key]: copy})
 					}
 					
 				}
