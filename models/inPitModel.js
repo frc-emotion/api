@@ -4,20 +4,19 @@ const subSchema = new mongoose.Schema({
 	content: {type: mongoose.Mixed, required: true}, 
 	user: {type: String, required: true}, 
 	timestamp: {type: String, required: true},
-	_id: false});
+	_id: false
+});
 
 
-const pitSchema = mongoose.Schema(
-	{
-    teamNumber: {type: Number, required: true },
+const pitSchema = mongoose.Schema({
+	teamNumber: {type: Number, required: true },
 	working: [subSchema],
 	numOfChargers: [subSchema],
-    numOfBatteries: [subSchema],
+	numOfBatteries: [subSchema],
 	drivetrain: [subSchema], // Ex. Tank, Mecanum, Swerve, etc.
 	preferredScoringType: [subSchema], // Ex. High Mid Low
 	preferredScoringMethod: [subSchema], // Ex. Cone Cube Both
 	comments: [subSchema],
-	}
-);
+});
 
 module.exports = global.scoutingDb.model("InPit", pitSchema);
