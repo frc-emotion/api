@@ -14,7 +14,7 @@ const getProfile = asyncHandler(async (req, res) => {
 
 const editProfile = asyncHandler(async (req, res) => {
 	// Check if the team has a profile
-	const exists = await inPit.exists({teamNumber:req.body.teamNumber})
+	const exists = await inPit.exists({teamNumber:req.body.teamNumber});
 	if (!exists){
 		// Create a profile for the team if it doesn't exist
 		const profile = await inPit.create({
@@ -76,5 +76,5 @@ const deleteProfile = asyncHandler(async (req, res) => {
 module.exports = {
     getProfile,
     editProfile,
-	deleteProfile
+    deleteProfile
 };
