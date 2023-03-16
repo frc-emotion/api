@@ -16,7 +16,7 @@ const pitSchema = mongoose.Schema(
 	drivetrain: [subSchema], // Ex. Tank, Mecanum, Swerve, etc.
 	preferredScoringType: [subSchema], // Ex. High Mid Low
 	preferredScoringMethod: [subSchema], // Ex. Cone Cube Both
-	comments: [subSchema], // TODO: Make this an array of strings 
+	comments: [subSchema],
 	}
 );
 
