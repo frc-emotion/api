@@ -30,7 +30,7 @@ const editProfile = asyncHandler(async (req, res) => {
 		});
 		// Return that new profile with the appropriate status code (201 Created)
 		res.status(201).json(profile);
-	}else{
+	} else {
 		// If the profile for the team already exists check for any differences between the body and the database
 
 		const all = [];
@@ -47,7 +47,7 @@ const editProfile = asyncHandler(async (req, res) => {
 			for ([dbKey, dbValue] of entrifiedDB){
 				if (key === dbKey && dbValue instanceof Array){
 					for ([index, obj] of dbValue.entries()){
-						all.push(obj.content)
+						all.push(obj.content);
 					}
 					if (!(all.includes(value.content))){
 						const updated = await inPit.findOneAndUpdate({teamNumber:req.body.teamNumber}, {$push: {[key]: value}}, {new: true});
@@ -55,15 +55,15 @@ const editProfile = asyncHandler(async (req, res) => {
 						copy.sort(function(a, b) {
 							return new Date(a.timestamp) - new Date(b.timestamp);
 						}).reverse();
-						await inPit.update({teamNumber:req.body.teamNumber}, {[key]: copy})
+						await inPit.update({teamNumber:req.body.teamNumber}, {[key]: copy});
 					}
 					
 				}
 			}
 		  }
 		// Return the profile regardless of whether it was updated or not
-		const profile = await inPit.findOne({teamNumber: req.body.teamNumber})
-		res.status(200).json(profile)
+		const profile = await inPit.findOne({teamNumber: req.body.teamNumber});
+		res.status(200).json(profile);
 	}	
 });
 
