@@ -1,16 +1,15 @@
 const asyncHandler = require("express-async-handler");
 const inPit = require("../models/inPitModel.js");
 
-const getAllProfiles = asyncHandler(async (req, res) => {
-	const profiles = await inPit.find();
-    res.status(200).json(profiles);
-});
-
 const getProfile = asyncHandler(async (req, res) => {
 	const profile = await inPit.find({teamNumber: req.query.teamNumber});
 	// If the profile doesn't exist return a 404 error
-	(!profile.length) ? res.status(404).end() : res.status(200).json(profile);
-	
+	if (!profile.length) {
+		const profile = await inPit.find();
+    	res.status(200).json(profile);
+	} else {
+		res.status(200).json(profile);
+	}	
 });
 
 const editProfile = asyncHandler(async (req, res) => {
@@ -75,7 +74,6 @@ const deleteProfile = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-	getAllProfiles,
     getProfile,
     editProfile,
 	deleteProfile
