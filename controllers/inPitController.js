@@ -49,7 +49,7 @@ const editProfile = asyncHandler(async (req, res) => {
 					for ([index, obj] of dbValue.entries()){
 						all.push(obj.content);
 					}
-					if (!(all.includes(value.content))){
+					if (!(all[0].includes(value.content))){
 						const updated = await inPit.findOneAndUpdate({teamNumber:req.body.teamNumber}, {$push: {[key]: value}}, {new: true});
 						const copy = updated[key];
 						copy.sort(function(a, b) {
