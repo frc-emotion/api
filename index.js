@@ -79,7 +79,7 @@ for (let i = 0; i < games.length; i++) {
 
 app.use(`${api}/users`, require("./routes/userRoutes.js"));
 app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
-app.use(`${api}/scouting`, require("./routes/inPitRoutes.js"));
+app.use(`${api}/inpit`, require("./routes/inPitRoutes.js"));
 
 app.use(errorHandler);
 
