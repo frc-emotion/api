@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const connectDB = (dbUrl) => { 
     try {
         return mongoose.createConnection(dbUrl)
