@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const dotenv = require("dotenv").config();
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
@@ -81,6 +82,7 @@ app.use(`${api}/users`, require("./routes/userRoutes.js"));
 app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
 app.use(`${api}/inpit`, require("./routes/inPitRoutes.js"));
 
+app.use(cors);
 app.use(errorHandler);
 
 app.listen(port, () => {
