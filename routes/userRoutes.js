@@ -3,6 +3,7 @@ const router = express.Router();
 const {
 	register,
 	login,
+	checkToken,
 	getMe,
 	deleteMe,
 	updateMe,
@@ -17,9 +18,7 @@ const { protect, adminProtect } = require("../middleware/authMiddleware");
 router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
 
-router.get("/verify", protect, (req, res) => {
-	res.status(200).send("OK");
-});
+router.get("/verify", checkToken);
 
 // get, delete, and update users
 // getting lists of users requires admin permission

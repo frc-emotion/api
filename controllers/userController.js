@@ -73,6 +73,20 @@ const login = asyncHandler(async (req, res) => {
 	}
 });
 
+const checkToken = asyncHandler(async (req, res) => {
+	try {
+		const token = req.headers.authorization.split(" ")[1];
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		if (decoded) {
+			res.json({ message: "TRUE" });
+		} else {
+			res.json({ message: "FALSE" });
+		}
+	} catch (error) {
+		res.json({ message: "FALSE" });
+	}
+});
+
 const getMe = asyncHandler(async (req, res) => {
 	const { _id, firstname, lastname, username, email, isAdmin, isVerified } =
 		await User.findById(req.user.id);
@@ -161,6 +175,7 @@ const generateToken = (id) => {
 module.exports = {
 	register,
 	login,
+	checkToken,
 	getMe,
 	deleteMe,
 	updateMe,
