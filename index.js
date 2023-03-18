@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const dotenv = require("dotenv").config();
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
@@ -57,17 +57,13 @@ global.usersDb = usersDb;
 global.seasonsDb = seasonsDb;
 global.scoutingDb = scoutingDb;
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Add Access Control Allow Origin headers
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.header(
-		"Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content-Type, Accept"
-	);
+	res.header("Access-Control-Allow-Headers", "*");
 	next();
 });
 
