@@ -17,6 +17,10 @@ const { protect, adminProtect } = require("../middleware/authMiddleware");
 router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
 
+router.get("/verify", protect, (req, res) => {
+	res.status(200).send("OK");
+});
+
 // get, delete, and update users
 // getting lists of users requires admin permission
 router.route("/").get(adminProtect, getUsers);
