@@ -11,6 +11,8 @@ const {
 	getUserById,
 	deleteUser,
 	updateUser,
+	verifyUser,
+	adminUser,
 } = require("../controllers/userController");
 const { protect, adminProtect } = require("../middleware/authMiddleware");
 
@@ -29,6 +31,8 @@ router
 	.delete(adminProtect, deleteUser)
 	.put(adminProtect, updateUser);
 
+router.route("/id/:id/verify").get(adminProtect, verifyUser);
+router.route("/id/:id/admin").get(adminProtect, adminUser);
 router.route("/id/:id/delete").get(adminProtect, deleteUser);
 
 // user actions that can be called by user, requires bearer token

@@ -167,6 +167,26 @@ const updateUser = asyncHandler(async (req, res) => {
 	res.status(200).json(updatedUser);
 });
 
+const verifyUser = asyncHandler(async (req, res) => {
+	const user = await User.findByIdAndUpdate(
+		req.params.id,
+		{
+			isVerified: true,
+		},
+		{ new: true }
+	);
+
+	res.status(200).json(user);
+});
+
+const adminUser = asyncHandler(async (req, res) => {
+	const user = await User.findByIdAndUpdate(
+		req.params.id,
+		{ isVerified: true, isAdmin: true },
+		{ new: true }
+	);
+	res.status(200).json(user);
+});
 // generate JHT token
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -183,4 +203,6 @@ module.exports = {
 	getUserById,
 	deleteUser,
 	updateUser,
+	verifyUser,
+	adminUser,
 };
