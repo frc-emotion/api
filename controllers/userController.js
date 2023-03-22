@@ -130,7 +130,7 @@ const updateMe = asyncHandler(async (req, res) => {
 });
 
 const getUsers = asyncHandler(async (req, res) => {
-	const users = await User.find({});
+	const users = await User.find(req.params);
 	res.json(users);
 });
 

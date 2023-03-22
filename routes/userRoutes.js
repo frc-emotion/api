@@ -29,6 +29,8 @@ router
 	.delete(adminProtect, deleteUser)
 	.put(adminProtect, updateUser);
 
+router.route("/id/:id/delete").get(adminProtect, deleteUser);
+
 // user actions that can be called by user, requires bearer token
 router
 	.route("/me")
