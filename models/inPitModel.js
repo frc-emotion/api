@@ -10,6 +10,7 @@ const subSchema = new mongoose.Schema({
 
 const pitSchema = mongoose.Schema({
 	teamNumber: {type: Number, required: true },
+	teamName: { type: String, required: true },
 	working: [subSchema],
 	numOfChargers: [subSchema],
 	numOfBatteries: [subSchema],

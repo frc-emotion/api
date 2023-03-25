@@ -19,6 +19,7 @@ const editProfile = asyncHandler(async (req, res) => {
 		// Create a profile for the team if it doesn't exist
 		const profile = await inPit.create({
 			teamNumber: req.body.teamNumber,
+			teamName: req.body.teamName,
 			working: req.body.working,
 			numOfChargers: req.body.numOfChargers,
 			numOfBatteries: req.body.numOfBatteries,
