@@ -52,7 +52,7 @@ const login = asyncHandler(async (req, res) => {
 
 	const user = await User.findOne({ username });
 	if (!user) {
-		res.status(400).json({ message: "User does not exist" });
+		res.status(404).json({ message: "User does not exist" });
 	}
 	const isMatch = await bcrypt.compare(password, user.password);
 	if (!user || !isMatch) {
@@ -105,7 +105,7 @@ const deleteMe = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user.id);
 
 	if (!user) {
-		res.status(400);
+		res.status(404);
 		throw new Error("User not found");
 	}
 
@@ -118,7 +118,7 @@ const updateMe = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user.id);
 
 	if (!user) {
-		res.status(400);
+		res.status(404);
 		throw new Error("User not found");
 	}
 
@@ -137,7 +137,7 @@ const getUsers = asyncHandler(async (req, res) => {
 const getUserById = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id);
 	if (!user) {
-		res.status(400).json({ message: "User not found" });
+		res.status(404).json({ message: "User not found" });
 	} else {
 		res.json(user);
 	}
@@ -147,7 +147,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 	const user = User.findById(req.params.id);
 
 	if (!user) {
-		res.status(400);
+		res.status(404);
 		throw new Error("Requested user not found");
 	}
 

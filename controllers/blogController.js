@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Blog = require("../models/blogModel");
+const mongoose = require("mongoose");
 
 const createPost = asyncHandler(async (req, res) => {
 	const { title, author, date, body, tags, public } = req.body;
@@ -38,11 +39,13 @@ const getPosts = asyncHandler(async (req, res) => {
 });
 
 const getPostById = asyncHandler(async (req, res) => {
+	if (!mongoose.Types.ObjectId.isValid(req.params.id))
+		res.status(400).json({ message: "Invalid object id" });
 	const post = await Blog.findById(req.params.id);
-	if (post) {
-		res.json(post);
-	} else {
+	if (!post) {
 		res.status(404).json({ message: "Blog post not found" });
+	} else {
+		res.json(post);
 	}
 });
 
@@ -50,8 +53,7 @@ const deletePost = asyncHandler(async (req, res) => {
 	const post = await Blog.findById(req.params.id);
 
 	if (!post) {
-		res.status(400);
-		throw new Error("Requested blog post not found");
+		res.status(404).json({ message: "Blog post not found" });
 	}
 
 	await Blog.findByIdAndRemove(req.params.id);
