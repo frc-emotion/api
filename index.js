@@ -52,10 +52,19 @@ scoutingDb.on("connected", () => {
 	);
 });
 
+const blogDb = connectDB(process.env.MONGO_URI + `blog${connAppend}`);
+blogDb.on("connected", () => {
+	console.log(
+		"Successfully connected to blog database: " +
+			`${blogDb.host}`.green.underline
+	);
+});
+
 global.gamesDb = gamesDb;
 global.usersDb = usersDb;
 global.seasonsDb = seasonsDb;
 global.scoutingDb = scoutingDb;
+global.blogDb = blogDb;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -74,6 +83,7 @@ for (let i = 0; i < games.length; i++) {
 	);
 }
 
+app.use(`${api}/blog`, require("./routes/blogRoutes.js"));
 app.use(`${api}/users`, require("./routes/userRoutes.js"));
 app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
 app.use(`${api}/inpit`, require("./routes/inPitRoutes.js"));
