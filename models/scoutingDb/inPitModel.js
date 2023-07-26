@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 
 const subSchema = new mongoose.Schema({
-	content: {type: mongoose.Mixed, required: true}, 
-	user: {type: String, required: true}, 
-	timestamp: {type: String, required: true},
-	_id: false
+	content: { type: mongoose.Mixed, required: true },
+	user: { type: String, required: true },
+	timestamp: { type: String, required: true },
+	_id: false,
 });
 
-
 const pitSchema = mongoose.Schema({
-	teamNumber: {type: Number, required: true },
-	teamName: { type: String, required: true },
+	teamNumber: { type: Number, required: true, unique: true },
+	teamName: { type: String, required: true, unique: true },
 	working: [subSchema],
 	numOfChargers: [subSchema],
 	numOfBatteries: [subSchema],
