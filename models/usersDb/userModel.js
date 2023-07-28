@@ -8,10 +8,10 @@ const userSchema = mongoose.Schema(
 		email: { type: String, required: true, unique: true, trim: true },
 		password: { type: String, required: true },
 		phone: { type: Number, required: false, unique: true },
-		subteam: { type: String, required: true },
-		grade: { type: Number, required: true },
+		subteam: { type: String, required: false },
+		grade: { type: Number, required: false },
 		roles: { type: Array, required: true },
-		accountType: { type: Number, required: true },
+		accountType: { type: Number, required: true, default: 0 },
 		accountUpdateVersion: { type: Number, required: true },
 		forgotPassword: { type: Object, required: false },
 		// forgotPassword: {

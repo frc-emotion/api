@@ -1,20 +1,34 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
+const User = require("../models/usersDb/userModel");
 
 const register = asyncHandler(async (req, res) => {
-	const { firstname, lastname, username, email, password } = req.body;
+	const { firstname, lastname, username, email, password, phone, roles } =
+		req.body;
 
-	if (!firstname || !lastname || !username || !email || !password) {
+	if (
+		!firstname ||
+		!lastname ||
+		!username ||
+		!email ||
+		!password ||
+		!phone ||
+		!roles
+	) {
 		res.status(400).json({ message: "Please fill in all fields" });
 	}
 
 	const emailExists = await User.findOne({ email });
 	const usernameExists = await User.findOne({ username });
+	const phoneExists = await User.findOne({ phone });
 
-	if (emailExists || usernameExists) {
-		res.status(400).json({ message: "User already exists" });
+	if (emailExists) {
+		res.status(400).json({ message: "Email is already in use" });
+	} else if (usernameExists) {
+		res.status(400).json({ message: "Username is already in use" });
+	} else if (phoneExists) {
+		res.status(400).json({ message: "Phone number is already in use " });
 	}
 
 	const salt = await bcrypt.genSalt(10);
@@ -26,6 +40,10 @@ const register = asyncHandler(async (req, res) => {
 		username,
 		email,
 		password: hashedPassword,
+		phone,
+		accountType: 0,
+		roles,
+		accountUpdateVersion: 0,
 	});
 
 	if (user) {
@@ -35,8 +53,9 @@ const register = asyncHandler(async (req, res) => {
 			lastname: user.lastname,
 			username: user.username,
 			email: user.email,
-			isAdmin: user.isAdmin,
-			isVerified: user.isVerified,
+			phone: user.phone,
+			accountType: user.accountType,
+			roles: user.roles,
 			token: generateToken(user._id),
 		});
 	} else {
@@ -59,6 +78,8 @@ const login = asyncHandler(async (req, res) => {
 		res.status(400).json({ message: "Invalid credentials" });
 	}
 
+	// this method intentionally does NOT return all user fields
+	// use getMe, getUser, or getUserById to get all fields
 	if (user && isMatch) {
 		res.json({
 			_id: user.id,
@@ -66,8 +87,8 @@ const login = asyncHandler(async (req, res) => {
 			lastname: user.lastname,
 			username: user.username,
 			email: user.email,
-			isAdmin: user.isAdmin,
-			isVerified: user.isVerified,
+			accountType: user.accountType,
+			roles: user.roles,
 			token: generateToken(user._id),
 		});
 	}
@@ -78,40 +99,55 @@ const checkToken = asyncHandler(async (req, res) => {
 		const token = req.headers.authorization.split(" ")[1];
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		if (decoded) {
-			res.json({ message: "TRUE" });
+			res.json({ message: true });
 		} else {
-			res.json({ message: "FALSE" });
+			res.json({ message: false });
 		}
 	} catch (error) {
-		res.json({ message: "FALSE" });
+		res.json({ message: false });
 	}
 });
 
 const getMe = asyncHandler(async (req, res) => {
-	const { _id, firstname, lastname, username, email, isAdmin, isVerified } =
-		await User.findById(req.user.id);
+	const {
+		_id,
+		firstname,
+		lastname,
+		username,
+		email,
+		phone,
+		subteam,
+		roles,
+		accountType,
+		accountUpdateVersion,
+		socials,
+		children,
+		spouse,
+		donationAmounts,
+		employer,
+		parents,
+		attendance,
+	} = await User.findById(req.user.id);
 	res.status(200).json({
 		id: _id,
 		firstname,
 		lastname,
 		username,
 		email,
-		isAdmin,
-		isVerified,
+		phone,
+		grade,
+		subteam,
+		roles,
+		accountType,
+		accountUpdateVersion,
+		socials,
+		children,
+		spouse,
+		donationAmounts,
+		employer,
+		parents,
+		attendance,
 	});
-});
-
-const deleteMe = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.user.id);
-
-	if (!user) {
-		res.status(400);
-		throw new Error("User not found");
-	}
-
-	await User.findByIdAndRemove(req.user.id);
-
-	res.status(200).json({ message: "User deleted" });
 });
 
 const updateMe = asyncHandler(async (req, res) => {
@@ -129,12 +165,48 @@ const updateMe = asyncHandler(async (req, res) => {
 	res.status(200).json(updatedUser);
 });
 
-const getUsers = asyncHandler(async (req, res) => {
+const getUsersDefault = asyncHandler(async (req, res) => {
+	const users = await User.find(req.query);
+	let usersToSend = [];
+	for (let i = 0; i < users.length; i++) {
+		usersToSend.push({
+			id: users[i]._id,
+			firstname: users[i].firstname,
+			lastname: users[i].lastname,
+			username: users[i].username,
+			email: users[i].email,
+			subteam: users[i].subteam,
+			socials: users[i].socials,
+			grade: users[i].grade,
+		});
+	}
+	res.json(usersToSend);
+});
+
+const getUsersAdmin = asyncHandler(async (req, res) => {
 	const users = await User.find(req.query);
 	res.json(users);
 });
 
-const getUserById = asyncHandler(async (req, res) => {
+const getUserByIdDefault = asyncHandler(async (req, res) => {
+	const user = await User.finById(req.params.id);
+	if (!user) {
+		res.status(400).json({ message: "User not found" });
+	} else {
+		res.json({
+			id: user._id,
+			firstname: user.firstname,
+			lastname: user.lastname,
+			username: user.username,
+			email: user.email,
+			subteam: user.subteam,
+			socials: user.socials,
+			grade: user.grade,
+		});
+	}
+});
+
+const getUserByIdAdmin = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id);
 	if (!user) {
 		res.status(400).json({ message: "User not found" });
@@ -167,26 +239,6 @@ const updateUser = asyncHandler(async (req, res) => {
 	res.status(200).json(updatedUser);
 });
 
-const verifyUser = asyncHandler(async (req, res) => {
-	const user = await User.findByIdAndUpdate(
-		req.params.id,
-		{
-			isVerified: true,
-		},
-		{ new: true }
-	);
-
-	res.status(200).json(user);
-});
-
-const adminUser = asyncHandler(async (req, res) => {
-	const user = await User.findByIdAndUpdate(
-		req.params.id,
-		{ isVerified: true, isAdmin: true },
-		{ new: true }
-	);
-	res.status(200).json(user);
-});
 // generate JHT token
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -197,12 +249,11 @@ module.exports = {
 	login,
 	checkToken,
 	getMe,
-	deleteMe,
 	updateMe,
-	getUsers,
-	getUserById,
+	getUsersDefault,
+	getUsersAdmin,
+	getUserByIdDefault,
+	getUserByIdAdmin,
 	deleteUser,
 	updateUser,
-	verifyUser,
-	adminUser,
 };
