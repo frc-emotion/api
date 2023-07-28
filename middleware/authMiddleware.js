@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 
 function protect(level, protecting, fallback) {
@@ -29,11 +28,14 @@ function protect(level, protecting, fallback) {
 			}
 		}
 
-		if (token) {
+		if (!token) {
 			res.status(401).json({ message: "No token" });
 		} else {
-			if (/* req.user.accountLevel === level */ false) {
+			const accountType = req.user.accountType >= level;
+			if (accountType && protecting) {
 				protecting(req, res);
+			} else if (accountType) {
+				next();
 			} else if (fallback) {
 				fallback(req, res);
 			} else {
