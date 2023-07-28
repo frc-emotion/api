@@ -11,21 +11,18 @@ const {
 	deleteSeason,
 } = require("../controllers/seasonController");
 
-const { adminProtect } = require("../middleware/authMiddleware");
+const protect = require("../middleware/authMiddleware");
 
-router
-	.route("/")
-	.post(adminProtect, createSeason)
-	.get(getSeasons);
+router.route("/").post(protect(3, createSeason)).get(getSeasons);
 router
 	.route("/:year")
 	.get(getSeasonByYear)
-	.put(adminProtect, updateSeason)
-	.delete(adminProtect, deleteSeason);
+	.put(protect(3, updateSeason))
+	.delete(protect(3, deleteSeason));
 router
 	.route("/:year/competitions")
 	.get(getSeasonCompetitions)
-	.post(adminProtect, createCompetition)
-	.delete(adminProtect, deleteCompetition);
+	.post(protect(3, createCompetition))
+	.delete(protect(3, deleteCompetition));
 
 module.exports = router;

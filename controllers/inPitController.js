@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const inPit = require("../models/inPitModel.js");
+const inPit = require("../models/scoutingDb/inPitModel.js");
 
 const getProfile = asyncHandler(async (req, res) => {
 	const profile = await inPit.find({teamNumber: req.query.teamNumber});

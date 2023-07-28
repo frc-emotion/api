@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const ChargedUp = require("../models/chargedUpModel.js");
+const ChargedUp = require("../models/scoutingDb/chargedUpModel.js");
 
 async function create(req) {
 	return await ChargedUp.create({
