@@ -16,4 +16,4 @@ const seasonSchema = mongoose.Schema(
 	}
 );
 
-module.exports = global.seasonsDb.model("Season", seasonSchema);
+module.exports = global.scoutingDb.model("Season", seasonSchema);

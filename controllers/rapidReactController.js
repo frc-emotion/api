@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const Game = require("../models/rapidReactModel.js");
+const Game = require("../models/scoutingDb/rapidReactModel.js");
 const fetch = (...args) =>
 	import("node-fetch").then(({ default: fetch }) => fetch(...args));
 

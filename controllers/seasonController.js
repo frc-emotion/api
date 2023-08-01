@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const Season = require("../models/seasonModel.js");
+const Season = require("../models/scoutingDb/seasonModel.js");
 
 const getSeasons = asyncHandler(async (req, res) => {
 	const seasons = await Season.find({}).sort({ year: -1 });

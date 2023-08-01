@@ -6,15 +6,14 @@ const {
 	deleteProfile,
 } = require("../controllers/inPitController");
 const fillTeamName = require("../middleware/fillTeamName");
-
-const { verifiedProtect } = require("../middleware/authMiddleware");
+const protect = require("../middleware/authMiddleware");
 
 // all routes require user to be verified before making a request
 // authorization middleware checks for bearer token in header
-router.route("/getProfile").get(verifiedProtect, getProfile);
+router.route("/getProfile").get(protect(1, getProfile));
 router
 	.route("/editProfile")
-	.post(verifiedProtect, fillTeamName, editProfile)
-	.delete(verifiedProtect, deleteProfile);
+	.post(protect(1), fillTeamName, editProfile)
+	.delete(protect(1, deleteProfile));
 
 module.exports = router;

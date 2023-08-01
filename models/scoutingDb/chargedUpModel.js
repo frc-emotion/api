@@ -1,3 +1,4 @@
+const Double = require("@mongoosejs/double/lib");
 const mongoose = require("mongoose");
 
 const chargedUpSchema = mongoose.Schema(
@@ -9,8 +10,38 @@ const chargedUpSchema = mongoose.Schema(
 		teamName: { type: String, required: true },
 		RPEarned: Array,
 		totalRP: Number,
-		autoPeriod: Object,
-		teleopPeriod: Object,
+		autoPeriod: {
+			botScore: Number,
+			botCones: Number,
+			botCubes: Number,
+			midScore: Number,
+			midCones: Number,
+			midCubes: Number,
+			topScore: Number,
+			topCones: Number,
+			topCubes: Number,
+			totalScore: Number,
+			totalCones: Number,
+			totalCubes: Number,
+			coneRate: Double,
+			cubeRate: Double,
+		},
+		teleopPeriod: {
+			botScore: Number,
+			botCones: Number,
+			botCubes: Number,
+			midScore: Number,
+			midCones: Number,
+			midCubes: Number,
+			topScore: Number,
+			topCones: Number,
+			topCubes: Number,
+			totalScore: Number,
+			totalCones: Number,
+			totalCubes: Number,
+			coneRate: Double,
+			cubeRate: Double,
+		},
 		coneRate: Number,
 		cubeRate: Number,
 		linkScore: Number,
@@ -33,4 +64,4 @@ const chargedUpSchema = mongoose.Schema(
 	}
 );
 
-module.exports = global.gamesDb.model("ChargedUp", chargedUpSchema);
+module.exports = global.scoutingDb.model("ChargedUp", chargedUpSchema);
