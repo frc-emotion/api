@@ -7,13 +7,15 @@ const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 const api = process.env.API_URL;
 const app = express();
-const games = [{ name: "rapidReact" }, { name: "chargedUp" }];
-// connect to the MongoDB database, configure in ./config/db.js
-
+const apiVersion = 2;
 const connAppend =
 	process.env.NODE_ENV === "production"
 		? "?retryWrites=true&w=majority&directConnection=true&authSource=admin"
 		: "?retryWrites=true&w=majority";
+
+process.env.NODE_ENV === "production"
+	? (process.env.MONGO_URI = process.env.MONGO_URI_PROD)
+	: (process.env.MONGO_URI = process.env.MONGO_URI_DEV);
 
 const usersDb = connectDB(process.env.MONGO_URI + `users${connAppend}`);
 usersDb.on("connected", () => {
@@ -44,16 +46,50 @@ app.use((req, res, next) => {
 	next();
 });
 
-for (let i = 0; i < games.length; i++) {
-	app.use(
-		`${api}/${games[i].name}`,
-		require(`./routes/${games[i].name}Routes`)
-	);
+const games = [
+	{ name: "rapidReact", minVersion: 1 },
+	{ name: "chargedUp", minVersion: 1 },
+];
+
+const nonGameRoutes = [
+	// keep 1 route path for each version even if they are the same
+	{
+		name: "users",
+		routePath: [
+			"./compatibility/v1/userRoutes.js",
+			"./routes/userRoutes.js",
+		],
+		minVersion: 1,
+	},
+	{
+		name: "seasons",
+		routePath: ["./compatibility/v1/seasonRoutes.js", "./routes/seasonRoutes.js"],
+		minVersion: 1,
+	},
+	{
+		name: "inpit",
+		routePath: ["./routes/inPitRoutes.js"],
+		minVersion: 2,
+	},
+];
+
+for (let i = 0; i < apiVersion; i++) {
+	for (let j = 0; j < games.length; j++) {
+		app.use(
+			`${api}/v${i + 1}/${games[j].name}`,
+			require(`./routes/${games[j].name}Routes`)
+		);
+	}
 }
 
-app.use(`${api}/users`, require("./routes/userRoutes.js"));
-app.use(`${api}/seasons`, require("./routes/seasonRoutes.js"));
-app.use(`${api}/inpit`, require("./routes/inPitRoutes.js"));
+for (let i = 0; i < nonGameRoutes.length; i++) {
+	for (let j = nonGameRoutes[i].minVersion; j <= apiVersion; j++) {
+		app.use(
+			`${api}/v${j}/${nonGameRoutes[i].name}`,
+			require(nonGameRoutes[i].routePath[j - nonGameRoutes[i].minVersion])
+		);
+	}
+}
 
 app.use(cors);
 app.use(errorHandler);
