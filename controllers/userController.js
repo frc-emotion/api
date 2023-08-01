@@ -109,47 +109,13 @@ const checkToken = asyncHandler(async (req, res) => {
 });
 
 const getMe = asyncHandler(async (req, res) => {
-	const {
-		_id,
-		firstname,
-		lastname,
-		username,
-		email,
-		phone,
-		subteam,
-		roles,
-		accountType,
-		accountUpdateVersion,
-		socials,
-		children,
-		spouse,
-		donationAmounts,
-		employer,
-		parents,
-		attendance,
-	} = await User.findById(req.user.id);
-	res.status(200).json({
-		id: _id,
-		firstname,
-		lastname,
-		username,
-		email,
-		phone,
-		grade,
-		subteam,
-		roles,
-		accountType,
-		accountUpdateVersion,
-		socials,
-		children,
-		spouse,
-		donationAmounts,
-		employer,
-		parents,
-		attendance,
-	});
+	const userFromDb = await User.findById(req.user.id);
+	const user = userFromDb.toObject();
+	// temporary solution while transitioning from v1 to v2
+	if (user.isAdmin) delete user.isAdmin;
+	if (user.isVerified) delete user.isVerified;
+	res.status(200).json(user);
 });
-
 
 const deleteMe = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user.id);
@@ -175,6 +141,11 @@ const updateMe = asyncHandler(async (req, res) => {
 	const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,
 	});
+
+	// temporary solution while transitioning from v1 to v2
+	const updatedUserObj = updatedUser.toObject();
+	if (updatedUserObj.isAdmin) delete updatedUserObj.isAdmin;
+	if (updatedUserObj.isVerified) delete updatedUserObj.isVerified;
 
 	res.status(200).json(updatedUser);
 });
@@ -264,7 +235,7 @@ module.exports = {
 	checkToken,
 	getMe,
 	updateMe,
-  deleteMe,
+	deleteMe,
 	getUsersDefault,
 	getUsersAdmin,
 	getUserByIdDefault,

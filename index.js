@@ -46,12 +46,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-const games = [
-	{ name: "rapidReact", minVersion: 1 },
-	{ name: "chargedUp", minVersion: 1 },
-];
-
-const nonGameRoutes = [
+const routes = [
 	// keep 1 route path for each version even if they are the same
 	{
 		name: "users",
@@ -63,7 +58,10 @@ const nonGameRoutes = [
 	},
 	{
 		name: "seasons",
-		routePath: ["./compatibility/v1/seasonRoutes.js", "./routes/seasonRoutes.js"],
+		routePath: [
+			"./compatibility/v1/seasonRoutes.js",
+			"./routes/seasonRoutes.js",
+		],
 		minVersion: 1,
 	},
 	{
@@ -71,22 +69,26 @@ const nonGameRoutes = [
 		routePath: ["./routes/inPitRoutes.js"],
 		minVersion: 2,
 	},
+	{
+		name: "rapidReact",
+		routePath: ["./compatibility/v1/rapidReactRoutes.js", "./routes/rapidReactRoutes.js"],
+		minVersion: 1,
+	},
+	{
+		name: "chargedUp",
+		routePath: [
+			"./compatibility/v1/chargedUpRoutes.js",
+			"./routes/chargedUpRoutes.js",
+		],
+		minVersion: 1,
+	},
 ];
 
-for (let i = 0; i < apiVersion; i++) {
-	for (let j = 0; j < games.length; j++) {
+for (let i = 0; i < routes.length; i++) {
+	for (let j = routes[i].minVersion; j <= apiVersion; j++) {
 		app.use(
-			`${api}/v${i + 1}/${games[j].name}`,
-			require(`./routes/${games[j].name}Routes`)
-		);
-	}
-}
-
-for (let i = 0; i < nonGameRoutes.length; i++) {
-	for (let j = nonGameRoutes[i].minVersion; j <= apiVersion; j++) {
-		app.use(
-			`${api}/v${j}/${nonGameRoutes[i].name}`,
-			require(nonGameRoutes[i].routePath[j - nonGameRoutes[i].minVersion])
+			`${api}/v${j}/${routes[i].name}`,
+			require(routes[i].routePath[j - routes[i].minVersion])
 		);
 	}
 }

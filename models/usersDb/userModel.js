@@ -15,8 +15,8 @@ const userSchema = mongoose.Schema(
 		accountUpdateVersion: { type: Number, required: true },
 		forgotPassword: { type: Object, required: false },
 		// forgotPassword: {
-			// code: { type: Number },
-			// expiresAt: { type: Number },
+		// code: { type: Number },
+		// expiresAt: { type: Number },
 		// },
 		socials: { type: Array, required: false },
 
@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema(
 		spouse: { type: Object, required: false },
 		donationAmounts: { type: Array, required: false },
 		employer: { type: Object, required: false },
+
+		// temporary while transitioning from v1 to v2
+		isVerified: { type: Boolean, required: false },
+		isAdmin: { type: Boolean, required: false },
 	},
 	{
 		timestamps: true,

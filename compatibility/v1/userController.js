@@ -18,7 +18,7 @@ const login = asyncHandler(async (req, res) => {
 		res.status(400).json({ message: "Invalid credentials" });
 	}
 
-	const isCompatible = user.isAdmin || user.isVerified;
+	const isCompatible = user.toObject().isAdmin || user.toObject().isVerified;
 	if (!isCompatible) {
 		res.status(405).json({
 			message: "User is not compatible with the v1 API",
@@ -59,23 +59,15 @@ const getMe = asyncHandler(async (req, res) => {
 	const { _id, firstname, lastname, username, email, isAdmin, isVerified } =
 		await User.findById(req.user.id);
 
-	const v1Compatible = user.isAdmin || user.isVerified;
-
-	if (v1Compatible) {
-		res.status(200).json({
-			id: _id,
-			firstname,
-			lastname,
-			username,
-			email,
-			isAdmin,
-			isVerified,
-		});
-	} else {
-		res.status(405).json({
-			message: "User is not compatible with the v1 API",
-		});
-	}
+	res.status(200).json({
+		id: _id,
+		firstname,
+		lastname,
+		username,
+		email,
+		isAdmin,
+		isVerified,
+	});
 });
 
 // generate JHT token

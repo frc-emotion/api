@@ -1,31 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { login, checkToken, getMe } = require("./userController");
-const jwt = require("jsonwebtoken");
-const User = require("../../models/usersDb/userModel");
-const asyncHandler = require("express-async-handler");
+const protect = require("./protect.js");
 const deprecatedRoute = require("../deprecatedRoute");
-
-const protect = asyncHandler(async (req, res, next) => {
-	let token;
-	if (
-		req.headers.authorization &&
-		req.headers.authorization.startsWith("Bearer")
-	) {
-		try {
-			token = req.headers.authorization.split(" ")[1];
-			const decoded = jwt.verify(token, process.env.JWT_SECRET);
-			req.user = await User.findById(decoded.id).select("-password");
-			next();
-		} catch (err) {
-			console.log(err);
-			res.status(401).json({ message: "Token failed" });
-		}
-	}
-	if (!token) {
-		res.status(401).json({ message: "No token" });
-	}
-});
 
 // handle user signups and logins
 router.post("/register", deprecatedRoute);
