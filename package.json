@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/frc-emotion/scouting-backend#readme",
   "dependencies": {
+    "@mongoosejs/double": "^0.3.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
@@ -25,7 +26,7 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.7.2",
+    "mongoose": "^6.11.3",
     "node-fetch": "^3.3.0"
   },
   "devDependencies": {

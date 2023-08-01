@@ -5,41 +5,31 @@ const {
 	login,
 	checkToken,
 	getMe,
-	deleteMe,
 	updateMe,
-	getUsers,
-	getUserById,
+	getUsersDefault,
+	getUsersAdmin,
+	getUserByIdDefault,
+	getUserByIdAdmin,
 	deleteUser,
 	updateUser,
-	verifyUser,
-	adminUser,
 } = require("../controllers/userController");
-const { protect, adminProtect } = require("../middleware/authMiddleware");
+const protect = require("../middleware/authMiddleware");
 
 // handle user signups and logins
 router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
-
 router.get("/verify", checkToken);
 
 // get, delete, and update users
 // getting lists of users requires admin permission
-router.route("/").get(adminProtect, getUsers);
+router.route("/").get(protect(3, getUsersAdmin, getUsersDefault));
 router
 	.route("/id/:id")
-	.get(adminProtect, getUserById)
-	.delete(adminProtect, deleteUser)
-	.put(adminProtect, updateUser);
+	.get(protect(3, getUserByIdAdmin, getUserByIdDefault))
+	.delete(protect(3, deleteUser))
+	.put(protect(3, updateUser));
 
-router.route("/id/:id/verify").get(adminProtect, verifyUser);
-router.route("/id/:id/admin").get(adminProtect, adminUser);
-router.route("/id/:id/delete").get(adminProtect, deleteUser);
-
-// user actions that can be called by user, requires bearer token
-router
-	.route("/me")
-	.get(protect, getMe)
-	.put(protect, updateMe)
-	.delete(protect, deleteMe);
+// // user actions that can be called by user, requires bearer token
+router.route("/me").get(protect, getMe).put(protect, updateMe);
 
 module.exports = router;
