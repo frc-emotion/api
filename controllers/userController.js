@@ -60,6 +60,7 @@ const register = asyncHandler(async (req, res) => {
 			token: generateToken(user._id),
 			grade: user.grade,
 			subteam: user.subteam,
+			attendance: user.attendance,
 		});
 	} else {
 		res.status(400).json({ message: "Invalid user data" });
