@@ -7,8 +7,17 @@ const createMeeting = asyncHandler(async (req, res) => {
 	const { startTime, endTime, type, description, value, createdBy } =
 		req.body;
 
-	if (!startTime || !endTime || !type || !value || !createdBy) {
-		res.status(400).json({ message: "Please fill in all required fields" });
+	if (
+		!startTime ||
+		!endTime ||
+		!type ||
+		!value ||
+		!createdBy ||
+		isNaN(value)
+	) {
+		res.status(400).json({
+			message: "Please fill in all required fields correctly",
+		});
 	}
 
 	const meeting = await Meeting.create({
@@ -58,10 +67,18 @@ const attendMeeting = asyncHandler(async (req, res) => {
 		res.status(400).json({ message: "User not found" });
 	}
 
-	const attendance = new Attendance({
-		totalHoursLogged: user.attendance.totalHoursLogged + meeting.value,
-		logs: [...user.logs, meetingId],
-	});
+	const attendance = {
+		totalHoursLogged: isNaN(
+			Number(user.attendance?.at(-1)?.totalHoursLogged)
+		)
+			? meeting.value
+			: Number(user.attendance?.at(-1)?.totalHoursLogged) + meeting.value,
+		logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
+		completedMarketingAssignment:
+			user.attendance?.at(-1)?.completedMarketingAssignment === true,
+	};
+
+	console.log(attendance);
 
 	const updated = await User.findByIdAndUpdate(
 		userId,
