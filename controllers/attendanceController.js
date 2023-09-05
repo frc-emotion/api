@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Meeting = require("../models/usersDb/meetingModel.js");
-const Attendance = require("../models/usersDb/attendanceModel.js");
+const { generateToken } = require("./userController.js");
 const User = require("../models/usersDb/userModel.js");
 
 const createMeeting = asyncHandler(async (req, res) => {
@@ -87,7 +87,20 @@ const attendMeeting = asyncHandler(async (req, res) => {
 	);
 
 	if (updated) {
-		res.status(201).json(updated);
+		res.status(201).json({
+			attendance: updated.attendance,
+			firstname: updated.firstname,
+			lastname: updated.lastname,
+			username: updated.username,
+			email: updated.email,
+			grade: updated.grade,
+			phone: updated.phone,
+			accountType: updated.accountType,
+			roles: updated.roles,
+			token: generateToken(updated._id),
+			subteam: updated.subteam,
+			_id: updated._id,
+		});
 	} else {
 		res.status(500).json({ message: "Error" });
 	}
