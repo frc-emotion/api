@@ -4,18 +4,18 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 
 const register = asyncHandler(async (req, res) => {
-	const { firstname, lastname, username, email, password, phone, roles } =
-		req.body;
+	const {
+		firstname,
+		lastname,
+		username,
+		email,
+		password,
+		phone,
+		subteam,
+		grade,
+	} = req.body;
 
-	if (
-		!firstname ||
-		!lastname ||
-		!username ||
-		!email ||
-		!password ||
-		!phone ||
-		!roles
-	) {
+	if (!firstname || !lastname || !username || !email || !password || !phone) {
 		res.status(400).json({ message: "Please fill in all fields" });
 	}
 
@@ -42,7 +42,8 @@ const register = asyncHandler(async (req, res) => {
 		password: hashedPassword,
 		phone,
 		accountType: 0,
-		roles,
+		subteam,
+		grade,
 		accountUpdateVersion: 0,
 	});
 
@@ -57,6 +58,9 @@ const register = asyncHandler(async (req, res) => {
 			accountType: user.accountType,
 			roles: user.roles,
 			token: generateToken(user._id),
+			grade: user.grade,
+			subteam: user.subteam,
+			attendance: user.attendance,
 		});
 	} else {
 		res.status(400).json({ message: "Invalid user data" });
@@ -87,9 +91,13 @@ const login = asyncHandler(async (req, res) => {
 			lastname: user.lastname,
 			username: user.username,
 			email: user.email,
+			grade: user.grade,
+			phone: user.phone,
+			attendance: user.attendance,
 			accountType: user.accountType,
 			roles: user.roles,
 			token: generateToken(user._id),
+			subteam: user.subteam,
 		});
 	}
 });
@@ -242,4 +250,5 @@ module.exports = {
 	getUserByIdAdmin,
 	deleteUser,
 	updateUser,
+	generateToken,
 };

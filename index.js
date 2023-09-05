@@ -71,7 +71,10 @@ const routes = [
 	},
 	{
 		name: "rapidReact",
-		routePath: ["./compatibility/v1/rapidReactRoutes.js", "./routes/rapidReactRoutes.js"],
+		routePath: [
+			"./compatibility/v1/rapidReactRoutes.js",
+			"./routes/rapidReactRoutes.js",
+		],
 		minVersion: 1,
 	},
 	{
@@ -81,6 +84,11 @@ const routes = [
 			"./routes/chargedUpRoutes.js",
 		],
 		minVersion: 1,
+	},
+	{
+		name: "attendance",
+		routePath: ["./routes/attendanceRoutes.js"],
+		minVersion: 2,
 	},
 ];
 
