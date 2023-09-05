@@ -7,8 +7,8 @@ const userSchema = mongoose.Schema(
 		username: { type: String, required: true, unique: true, trim: true },
 		email: { type: String, required: true, unique: true, trim: true },
 		password: { type: String, required: true },
-		phone: { type: Number, required: false, unique: true },
-		subteam: { type: String, required: false },
+		phone: { type: String, required: false, unique: true },
+		subteam: { type: String, required: false }, //"software" | "build" | "executive" | "marketing" | "electrical" | "design"
 		grade: { type: Number, required: false },
 		roles: { type: Array, required: true },
 		accountType: { type: Number, required: true, default: 0 },
@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
 		socials: { type: Array, required: false },
 
 		parents: { type: Array, required: false },
-		attendance: { type: Array, required: false },
+		attendance: { type: Array, required: false }, //array of attendance objects, sorted by semester with 0 = 2023 fall
 
 		children: { type: Array, required: false },
 		spouse: { type: Object, required: false },
