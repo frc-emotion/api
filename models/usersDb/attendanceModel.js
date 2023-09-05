@@ -10,4 +10,4 @@ const attendanceSchema = mongoose.Schema({
 	},
 });
 
-module.exports = global.scoutingDb.model("Attendance", attendanceSchema);
+module.exports = global.usersDb.model("Attendance", attendanceSchema);

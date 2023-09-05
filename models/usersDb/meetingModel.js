@@ -23,9 +23,9 @@ const meetingSchema = mongoose.Schema({
 	startTime: { type: Number, required: true }, //UNIX timestamp
 	endTime: { type: Number, required: true }, //UNIX timestamp
 	type: { type: String, required: true, lowercase: true, trim: true }, // "meeting" | "competition" | "volunteer"
-	description: {type: String, required: false, trim: true},
+	description: { type: String, required: false, trim: true },
 	value: { type: Number, required: true }, // number of hours the meeting is worth (default 1 for meetings, 4 for competitions)
 	createdBy: { type: String, required: true }, // username of the user who created the meeting
 });
 
-module.exports = global.scoutingDb.model("Meeting", meetingSchema);
+module.exports = global.usersDb.model("Meeting", meetingSchema);
