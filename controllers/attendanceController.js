@@ -44,6 +44,42 @@ const createMeeting = asyncHandler(async (req, res) => {
 	}
 });
 
+
+const getMeeting = asyncHandler(async (req, res) => {
+	const { targetUser } = req.body;
+	if (!targetUser) {
+		res.status(400).json({ message: "Please fill in all fields properly" });
+	}
+	const meetings = await Meeting.find({targetUser: targetUser});
+	if (meetings && meetings.length > 0) {
+		res.status(200).json(meetings);
+	}
+	else {
+		res.status(400).json({ message: "No meetings found" });
+	}
+});
+
+const getAllMeeting = asyncHandler(async (req, res) => {
+	const meetings = await Meeting.find();
+
+	let validMeetings = [];
+
+	const currentTime = Math.floor(Date.now() / 1000);
+
+	meetings.forEach(element => {
+		if (currentTime >= element.startTime && currentTime <= element.endTime) {
+			validMeetings.push(element); // letsssssssssss goooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+		}
+	});
+
+	if (validMeetings && validMeetings.length > 0) {
+		res.status(200).json(validMeetings);
+	}
+	else {
+		res.status(400).json({ message: "No VALID meetings found" });
+	}
+});
+
 const attendMeeting = asyncHandler(async (req, res) => {
 	const { meetingId, userId, tapTime } = req.body;
 
@@ -104,6 +140,8 @@ const attendMeeting = asyncHandler(async (req, res) => {
 	} else {
 		res.status(500).json({ message: "Error" });
 	}
+
+
 });
 
-module.exports = { createMeeting, attendMeeting };
+module.exports = { createMeeting, attendMeeting, getMeeting, getAllMeeting };
