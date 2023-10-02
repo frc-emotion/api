@@ -31,7 +31,7 @@ function protect(level, protecting, fallback) {
 		if (!token) {
 			res.status(401).json({ message: "No token" });
 		} else {
-			const accountType = req.user.accountType >= level;
+			const accountType = req.user?.accountType >= level;
 			if (accountType && protecting) {
 				protecting(req, res);
 			} else if (accountType) {
