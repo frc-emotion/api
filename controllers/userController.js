@@ -122,7 +122,10 @@ const getMe = asyncHandler(async (req, res) => {
 	// temporary solution while transitioning from v1 to v2
 	if (user.isAdmin) delete user.isAdmin;
 	if (user.isVerified) delete user.isVerified;
-	res.status(200).json(user);
+	res.status(200).json({
+		...user,
+		token: generateToken(user._id),
+	});
 });
 
 const deleteMe = asyncHandler(async (req, res) => {
