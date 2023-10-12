@@ -39,7 +39,24 @@ const getGames = asyncHandler(async (req, res) => {
 	res.status(200).json(games);
 });
 
+async function handleBlueAlliance(req) {
+	const key = process.env.TBA_KEY;
+	const request = await fetch(
+		"https://www.thebluealliance.com/api/v3/team/frc" + req.body.teamNumber,
+		{ method: "GET", headers: { "X-TBA-Auth-Key": key } }
+	);
+	const jsoned = await request.json();
+	try {
+		const teamname = jsoned["nickname"];
+		return { ...req.body, teamName: teamname };
+	} catch (e) {
+		return { ...req.body, teamName: "-1" };
+	}
+}
+
 const createGame = asyncHandler(async (req, res) => {
+	const body = await handleBlueAlliance(req);
+	req.body = body;
 	const game = await create(req);
 	res.status(201).json(game);
 });
