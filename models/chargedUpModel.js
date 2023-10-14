@@ -33,4 +33,4 @@ const chargedUpSchema = mongoose.Schema(
 	}
 );
 
-module.exports = global.gamesDb.model("ChargedUp", chargedUpSchema);
+module.exports = global.scoutingDb.model("ChargedUp", chargedUpSchema);
