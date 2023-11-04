@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const ChargedUp = require("../models/scoutingDb/chargedUpModel.js");
+const fetch = (...args) =>
+	import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 async function create(req) {
 	return await ChargedUp.create({

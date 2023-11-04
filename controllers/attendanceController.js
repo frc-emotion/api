@@ -56,53 +56,55 @@ const attendMeeting = asyncHandler(async (req, res) => {
 		res.status(400).json({ message: "Meeting not found" });
 	}
 
-	if (!(meeting.startTime <= tapTime && meeting.endTime >= tapTime)) {
+	if (meeting.startTime > tapTime || meeting.endTime < tapTime) {
 		res.status(400).json({
 			message: "Tap time is not within meeting time",
 		});
-	}
-
-	const user = await User.findById(userId);
-	if (!user) {
-		res.status(400).json({ message: "User not found" });
-	}
-
-	const attendance = {
-		totalHoursLogged: isNaN(
-			Number(user.attendance?.at(-1)?.totalHoursLogged)
-		)
-			? meeting.value
-			: Number(user.attendance?.at(-1)?.totalHoursLogged) + meeting.value,
-		logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
-		completedMarketingAssignment:
-			user.attendance?.at(-1)?.completedMarketingAssignment === true,
-	};
-
-	console.log(attendance);
-
-	const updated = await User.findByIdAndUpdate(
-		userId,
-		{ attendance: [attendance] },
-		{ new: true }
-	);
-
-	if (updated) {
-		res.status(201).json({
-			attendance: updated.attendance,
-			firstname: updated.firstname,
-			lastname: updated.lastname,
-			username: updated.username,
-			email: updated.email,
-			grade: updated.grade,
-			phone: updated.phone,
-			accountType: updated.accountType,
-			roles: updated.roles,
-			token: generateToken(updated._id),
-			subteam: updated.subteam,
-			_id: updated._id,
-		});
+		return;
 	} else {
-		res.status(500).json({ message: "Error" });
+		const user = await User.findById(userId);
+		if (!user) {
+			res.status(400).json({ message: "User not found" });
+		}
+
+		const attendance = {
+			totalHoursLogged: isNaN(
+				Number(user.attendance?.at(-1)?.totalHoursLogged)
+			)
+				? meeting.value
+				: Number(user.attendance?.at(-1)?.totalHoursLogged) +
+				  meeting.value,
+			logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
+			completedMarketingAssignment:
+				user.attendance?.at(-1)?.completedMarketingAssignment === true,
+		};
+
+		console.log(attendance);
+
+		const updated = await User.findByIdAndUpdate(
+			userId,
+			{ attendance: [attendance] },
+			{ new: true }
+		);
+
+		if (updated) {
+			res.status(201).json({
+				attendance: updated.attendance,
+				firstname: updated.firstname,
+				lastname: updated.lastname,
+				username: updated.username,
+				email: updated.email,
+				grade: updated.grade,
+				phone: updated.phone,
+				accountType: updated.accountType,
+				roles: updated.roles,
+				token: generateToken(updated._id),
+				subteam: updated.subteam,
+				_id: updated._id,
+			});
+		} else {
+			res.status(500).json({ message: "Error" });
+		}
 	}
 });
 
