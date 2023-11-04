@@ -4,108 +4,119 @@ const { generateToken } = require("./userController.js");
 const User = require("../models/usersDb/userModel.js");
 
 const createMeeting = asyncHandler(async (req, res) => {
-	const { startTime, endTime, type, description, value, createdBy } =
-		req.body;
+    const { startTime, endTime, type, description, value, createdBy } =
+        req.body;
 
-	if (
-		!startTime ||
-		!endTime ||
-		!type ||
-		!value ||
-		!createdBy ||
-		isNaN(value)
-	) {
-		res.status(400).json({
-			message: "Please fill in all required fields correctly",
-		});
-	}
+    if (
+        !startTime ||
+        !endTime ||
+        !type ||
+        !value ||
+        !createdBy ||
+        isNaN(value)
+    ) {
+        res.status(400).json({
+            message: "Please fill in all required fields correctly",
+        });
+    }
 
-	const meeting = await Meeting.create({
-		startTime,
-		endTime,
-		type,
-		description,
-		value,
-		createdBy,
-	});
+    const meeting = await Meeting.create({
+        startTime,
+        endTime,
+        type,
+        description,
+        value,
+        createdBy,
+    });
 
-	if (meeting) {
-		res.status(201).json({
-			_id: meeting._id,
-			startTime: meeting.startTime,
-			endTime: meeting.endTime,
-			type: meeting.type,
-			description: meeting.description,
-			value: meeting.value,
-			createdBy: meeting.createdBy,
-		});
-	} else {
-		res.status(400).json({ message: "Invalid meeting data" });
-	}
+    if (meeting) {
+        res.status(201).json({
+            _id: meeting._id,
+            startTime: meeting.startTime,
+            endTime: meeting.endTime,
+            type: meeting.type,
+            description: meeting.description,
+            value: meeting.value,
+            createdBy: meeting.createdBy,
+        });
+    } else {
+        res.status(400).json({ message: "Invalid meeting data" });
+    }
 });
 
 const attendMeeting = asyncHandler(async (req, res) => {
-	const { meetingId, userId, tapTime } = req.body;
+    const { meetingId, userId, tapTime } = req.body;
 
-	if (!meetingId || !userId || !tapTime || Number.isNaN(tapTime)) {
-		res.status(400).json({ message: "Please fill in all fields properly" });
-	}
+    if (!meetingId || !userId || !tapTime || Number.isNaN(tapTime)) {
+        res.status(400).json({ message: "Please fill in all fields properly" });
+        return;
+    }
 
-	const meeting = await Meeting.findById(meetingId);
-	if (!meeting) {
-		res.status(400).json({ message: "Meeting not found" });
-	}
+    const meeting = await Meeting.findById(meetingId);
+    if (!meeting) {
+        res.status(404).json({ message: "Meeting not found" });
+        return;
+    }
 
-	if (meeting.startTime > tapTime || meeting.endTime < tapTime) {
-		res.status(400).json({
-			message: "Tap time is not within meeting time",
-		});
-		return;
-	} else {
-		const user = await User.findById(userId);
-		if (!user) {
-			res.status(400).json({ message: "User not found" });
-		}
+    if (meeting.startTime > tapTime || meeting.endTime < tapTime) {
+        res.status(400).json({
+            message: "Tap time is not within meeting time",
+        });
+        return;
+    } else {
+        const user = await User.findById(userId);
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
 
-		const attendance = {
-			totalHoursLogged: isNaN(
-				Number(user.attendance?.at(-1)?.totalHoursLogged)
-			)
-				? meeting.value
-				: Number(user.attendance?.at(-1)?.totalHoursLogged) +
-				  meeting.value,
-			logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
-			completedMarketingAssignment:
-				user.attendance?.at(-1)?.completedMarketingAssignment === true,
-		};
+        if (user.attendance?.at(-1)?.logs.includes(meetingId)) {
+            res.status(400).json({
+                message: "You have already attended this meeting",
+            });
+            return;
+        }
 
-		console.log(attendance);
+        const attendance = {
+            totalHoursLogged: isNaN(
+                Number(user.attendance?.at(-1)?.totalHoursLogged)
+            )
+                ? meeting.value
+                : Number(user.attendance?.at(-1)?.totalHoursLogged) +
+                  meeting.value,
+            logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
+            completedMarketingAssignment:
+                user.attendance?.at(-1)?.completedMarketingAssignment === true,
+        };
 
-		const updated = await User.findByIdAndUpdate(
-			userId,
-			{ attendance: [attendance] },
-			{ new: true }
-		);
+        console.log(attendance);
 
-		if (updated) {
-			res.status(201).json({
-				attendance: updated.attendance,
-				firstname: updated.firstname,
-				lastname: updated.lastname,
-				username: updated.username,
-				email: updated.email,
-				grade: updated.grade,
-				phone: updated.phone,
-				accountType: updated.accountType,
-				roles: updated.roles,
-				token: generateToken(updated._id),
-				subteam: updated.subteam,
-				_id: updated._id,
-			});
-		} else {
-			res.status(500).json({ message: "Error" });
-		}
-	}
+        const updated = await User.findByIdAndUpdate(
+            userId,
+            { attendance: [attendance] },
+            { new: true }
+        );
+
+        if (updated) {
+            res.status(201).json({
+                attendance: updated.attendance,
+                firstname: updated.firstname,
+                lastname: updated.lastname,
+                username: updated.username,
+                email: updated.email,
+                grade: updated.grade,
+                phone: updated.phone,
+                accountType: updated.accountType,
+                roles: updated.roles,
+                token: generateToken(updated._id),
+                subteam: updated.subteam,
+                _id: updated._id,
+            });
+        } else {
+            res.status(500).json({ message: "Error" });
+            return;
+        }
+    }
 });
 
 module.exports = { createMeeting, attendMeeting };
