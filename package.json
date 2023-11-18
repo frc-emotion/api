@@ -1,35 +1,35 @@
 {
-  "name": "api",
-  "version": "2.0.0",
-  "description": "FRC Team 2658 Web and Mobile API",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitub.com/frc-emotion/scouting-backend.git"
-  },
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/frc-emotion/scouting-backend/issues"
-  },
-  "homepage": "https://github.com/frc-emotion/scouting-backend#readme",
-  "dependencies": {
-    "@mongoosejs/double": "^0.3.0",
-    "bcryptjs": "^2.4.3",
-    "colors": "^1.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-async-handler": "^1.2.0",
-    "jsonwebtoken": "^9.0.1",
-    "mongoose": "6.12.0",
-    "node-fetch": "^3.3.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+    "name": "api",
+    "version": "2.0.0",
+    "description": "FRC Team 2658 Web and Mobile API",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitub.com/frc-emotion/scouting-backend.git"
+    },
+    "author": "",
+    "bugs": {
+        "url": "https://github.com/frc-emotion/scouting-backend/issues"
+    },
+    "homepage": "https://github.com/frc-emotion/scouting-backend#readme",
+    "dependencies": {
+        "@mongoosejs/double": "^0.3.0",
+        "bcryptjs": "^2.4.3",
+        "colors": "^1.4.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-async-handler": "^1.2.0",
+        "jsonwebtoken": "^9.0.1",
+        "mongoose": "6.12.0",
+        "node-fetch": "^3.3.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
 }
