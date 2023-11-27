@@ -45,6 +45,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 });
 
 const getMeetings = asyncHandler(async (req, res) => {
+	try{
 	const meetings = await Meeting.find({})
 		.where("endTime")
 		.gt(Date.now())
@@ -56,6 +57,11 @@ const getMeetings = asyncHandler(async (req, res) => {
 	} else {
 		res.status(404).json({ message: "No meetings found" });
 	}
+} catch (e) {
+	console.error(e);
+	res.status(500).json({ message: "Error" });
+	return;
+}
 });
 
 async function getHoursFromLogs(arr) {
