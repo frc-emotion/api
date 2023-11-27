@@ -45,23 +45,41 @@ const createMeeting = asyncHandler(async (req, res) => {
 });
 
 const getMeetings = asyncHandler(async (req, res) => {
-	try{
-	const meetings = await Meeting.find({})
-		.where("endTime")
-		.gt(Date.now())
-		.where("startTime")
-		.lt(Date.now());
+	try {
+		const meetings = await Meeting.find({})
+			.where("endTime")
+			.gt(Date.now())
+			.where("startTime")
+			.lt(Date.now());
 
-	if (meetings) {
-		res.status(200).json(meetings);
-	} else {
-		res.status(404).json({ message: "No meetings found" });
+		if (meetings) {
+			res.status(200).json(meetings);
+		} else {
+			res.status(404).json({ message: "No meetings found" });
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-} catch (e) {
-	console.error(e);
-	res.status(500).json({ message: "Error" });
-	return;
-}
+});
+
+const deleteMeeting = asyncHandler(async (req, res) => {
+	const id = req.params.id;
+	if (id) {
+		try {
+			const deleted = await Meeting.findByIdAndDelete(id);
+			if (deleted) {
+				res.status(200).json({ message: "Meeting deleted" });
+			} else {
+				res.status(404).json({ message: "Meeting not found" });
+			}
+		} catch (e) {
+			console.error(e);
+			res.status(500).json({ message: "Server Error" });
+			return;
+		}
+	} else res.status(400).json({ message: "Please provide an id" });
 });
 
 async function getHoursFromLogs(arr) {
@@ -163,4 +181,4 @@ const attendMeeting = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { createMeeting, attendMeeting, getMeetings };
+module.exports = { createMeeting, attendMeeting, getMeetings, deleteMeeting };
