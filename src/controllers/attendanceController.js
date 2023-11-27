@@ -44,6 +44,20 @@ const createMeeting = asyncHandler(async (req, res) => {
 	}
 });
 
+const getMeetings = asyncHandler(async (req, res) => {
+	const meetings = await Meeting.find({})
+		.where("endTime")
+		.gt(Date.now())
+		.where("startTime")
+		.lt(Date.now());
+
+	if (meetings) {
+		res.status(200).json(meetings);
+	} else {
+		res.status(404).json({ message: "No meetings found" });
+	}
+});
+
 async function getHoursFromLogs(arr) {
 	let total = 0;
 	try {
@@ -143,4 +157,4 @@ const attendMeeting = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { createMeeting, attendMeeting };
+module.exports = { createMeeting, attendMeeting, getMeetings };
