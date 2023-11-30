@@ -136,7 +136,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 			}
 
 			let hoursLogged = 0;
-			if (user.attendance?.at(-1)?.logs) {
+			if (Array.isArray(user.attendance?.at(-1)?.logs)) {
 				hoursLogged = Number(
 					meeting.value +
 						(await getHoursFromLogs(user.attendance?.at(-1)?.logs))
