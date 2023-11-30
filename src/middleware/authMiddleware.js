@@ -33,7 +33,6 @@ function protect(level, protecting, fallback) {
 			if (accountType && protecting) {
 				protecting(req, res);
 			} else if (accountType) {
-				next();
 			} else if (fallback) {
 				fallback(req, res);
 			} else {
