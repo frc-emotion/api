@@ -102,9 +102,7 @@ async function getHoursFromLogs(arr) {
 }
 
 const attendMeeting = asyncHandler(async (req, res) => {
-	const { meetingId, tapTime } = req.body;
-
-	const userId = req.user.id;
+	const { meetingId, userId, tapTime } = req.body;
 
 	if (!meetingId || !userId || !tapTime || Number.isNaN(tapTime)) {
 		res.status(400).json({ message: "Please fill in all fields properly" });
