@@ -135,11 +135,18 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				return;
 			}
 
-			const attendance = {
-				totalHoursLogged: Number(
+			let hoursLogged = 0;
+			if (Array.isArray(user.attendance?.at(-1)?.logs)) {
+				hoursLogged = Number(
 					meeting.value +
 						(await getHoursFromLogs(user.attendance?.at(-1)?.logs))
-				),
+				);
+			} else {
+				hoursLogged = meeting.value;
+			}
+
+			const attendance = {
+				totalHoursLogged: hoursLogged,
 				logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
 				completedMarketingAssignment:
 					user.attendance?.at(-1)?.completedMarketingAssignment ===
