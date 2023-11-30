@@ -18,8 +18,6 @@ function protect(level, protecting, fallback) {
 
 				// Get user from token
 				req.user = await User.findById(decoded.id).select("-password");
-
-				next();
 			} catch (err) {
 				console.log(err);
 				res.status(401).json({
@@ -35,7 +33,6 @@ function protect(level, protecting, fallback) {
 			if (accountType && protecting) {
 				protecting(req, res);
 			} else if (accountType) {
-				next();
 			} else if (fallback) {
 				fallback(req, res);
 			} else {
