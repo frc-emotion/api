@@ -212,27 +212,52 @@ const getUserByIdAdmin = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-	const user = User.findById(req.params.id);
+	console.log(req.params.id);
+	try {
+		const user = await User.findById(req.params.id);
 
-	if (!user) {
-		res.status(404);
-		throw new Error("Requested user not found");
+		console.log(user);
+
+		if (!user) {
+			res.status(404);
+			throw new Error("Requested user not found");
+		}
+
+		await User.findByIdAndRemove(req.params.id);
+
+		res.status(200).json({
+			message: "User deleted",
+			id: req.params.id,
+		});
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-
-	await User.findByIdAndRemove(req.params.id);
-
-	res.status(200).json({
-		message: "User deleted",
-		id: req.params.id,
-	});
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-	const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-	});
+	console.log(req.params);
+	try {
+		const updatedUser = await User.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{
+				new: true,
+			}
+		);
 
-	res.status(200).json(updatedUser);
+		if (updatedUser) {
+			res.status(200).json(updatedUser);
+		} else {
+			res.status(500).json({ message: "Error" });
+			return;
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
+	}
 });
 
 // generate JHT token

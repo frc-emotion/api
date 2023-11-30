@@ -24,10 +24,9 @@ router.get("/verify", checkToken);
 // getting lists of users requires admin permission
 router.route("/").get(protect(3, getUsersAdmin, getUsersDefault));
 router
-	.route("/id/:id")
-	.get(protect(3, getUserByIdAdmin, getUserByIdDefault))
-	.delete(protect(3, deleteUser))
-	.put(protect(3, updateUser));
+	.get("/user/:id", protect(3, getUserByIdAdmin, getUserByIdDefault))
+	.delete("/user/:id", protect(3, deleteUser))
+	.put("/user/:id", protect(3, updateUser));
 
 // // user actions that can be called by user, requires bearer token
 router.route("/me").get(protect(0), getMe).put(protect(0), updateMe);
