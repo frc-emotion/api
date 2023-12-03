@@ -6,6 +6,7 @@ const {
 	checkToken,
 	getMe,
 	updateMe,
+	deleteMe,
 	getUsersDefault,
 	getUsersAdmin,
 	getUserByIdDefault,
@@ -29,6 +30,10 @@ router
 	.put("/user/:id", protect(3, updateUser));
 
 // // user actions that can be called by user, requires bearer token
-router.route("/me").get(protect(0), getMe).put(protect(0), updateMe);
+router
+	.route("/me")
+	.get(protect(0), getMe)
+	.put(protect(0), updateMe)
+	.delete(protect(0, deleteMe));
 
 module.exports = router;

@@ -129,16 +129,22 @@ const getMe = asyncHandler(async (req, res) => {
 });
 
 const deleteMe = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.user.id);
+	try {
+		const user = await User.findById(req.user.id);
 
-	if (!user) {
-		res.status(404);
-		throw new Error("User not found");
+		if (!user) {
+			res.status(404);
+			throw new Error("User not found");
+		}
+
+		await User.findByIdAndRemove(req.user.id);
+
+		res.status(200).json({ message: "User deleted" });
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-
-	await User.findByIdAndRemove(req.user.id);
-
-	res.status(200).json({ message: "User deleted" });
 });
 
 const updateMe = asyncHandler(async (req, res) => {
