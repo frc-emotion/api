@@ -3,7 +3,60 @@ const Meeting = require("../models/usersDb/meetingModel.js");
 const { generateToken } = require("./userController.js");
 const User = require("../models/usersDb/userModel.js");
 
+/**
+ * @typedef {Object} CreateMeetingParams
+ * @property {number} startTime
+ * @property {number} endTime
+ * @property {string} type
+ * @property {string} description
+ * @property {number} value
+ * @property {string} createdBy
+ */
+
+
+/**
+ * @typedef {Object} meetingParams
+ * @property {number} startTime
+ * @property {number} endTime
+ * @property {string} type
+ * @property {string} description
+ * @property {number} value
+ * @property {string} createdBy
+ */
+
+/**
+ * @typedef {Object} meetingResponse
+ * @property {number} _id
+ * @property {number} startTime
+ * @property {number} endTime
+ * @property {string} type
+ * @property {string} description
+ * @property {number} value
+ * @property {string} createdBy
+ */
+
+/**
+ * @typedef {Object} attendanceParams
+ * @property {number} totalHoursLogged
+ * @property {boolean} completedMarketingAssignment
+ */
+
+/**
+ * @typedef {Object} attendanceParams
+ * @property {number} attendance
+ * @property {string} firstname
+ * @property {string} lastname
+ * @property {string} username
+ * @property {string} email
+ * @property {string} phone
+ * @property {number} accountType
+ * @property {Array} roles
+ * @property {string} subteam
+ * @property {number} _id
+ */
+
 const createMeeting = asyncHandler(async (req, res) => {
+	/**@type {CreateMeetingParams} */
 	const { startTime, endTime, type, description, value, createdBy } =
 		req.body;
 
@@ -20,6 +73,8 @@ const createMeeting = asyncHandler(async (req, res) => {
 		});
 	}
 
+	
+	/** @type {meetingParams} */
 	const meeting = await Meeting.create({
 		startTime,
 		endTime,
@@ -30,6 +85,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 	});
 
 	if (meeting) {
+		/** @type {meetingResponse} */
 		res.status(201).json({
 			_id: meeting._id,
 			startTime: meeting.startTime,
@@ -145,7 +201,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 			} else {
 				hoursLogged = meeting.value;
 			}
-
+			/** @type {attendanceParams} */
 			const attendance = {
 				totalHoursLogged: hoursLogged,
 				logs: [...(user.attendance?.at(-1)?.logs ?? []), meetingId],
@@ -163,6 +219,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 			);
 
 			if (updated) {
+				/**@type {updatedUserResponse} */
 				res.status(201).json({
 					attendance: updated.attendance,
 					firstname: updated.firstname,
