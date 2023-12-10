@@ -3,12 +3,12 @@
 FROM node:20
 
 # set working directory
-WORKDIR /src
+WORKDIR /usr/src/app
 
 # install and cache app dependencies
-COPY package.json package-lock.json ./
+COPY package*.json ./
+COPY /src ./src
 RUN npm install
-COPY . .
 
 # expose port api will run on
 EXPOSE 3000
