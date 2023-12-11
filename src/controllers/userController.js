@@ -3,7 +3,34 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 
+/**
+ * @typedef {Object} registerParams
+ * @property {string} firstname
+ * @property {string} lastname
+ * @property {string} username
+ * @property {string} email
+ * @property {string} password
+ * @property {string} phone
+ * @property {string} subteam
+ * @property {number} grade
+ */
+
+/**
+ * @typedef {Object} userParams
+ * @property {string} firstname
+ * @property {string} lastname
+ * @property {string} username
+ * @property {string} email
+ * @property {string} password
+ * @property {string} phone
+ * @property {number} accountType
+ * @property {string} subteam
+ * @property {number} grade
+ * @property {number} accountUpdateVersion
+ */
+
 const register = asyncHandler(async (req, res) => {
+	/**@type {registerParams} */
 	const {
 		firstname,
 		lastname,
@@ -34,6 +61,7 @@ const register = asyncHandler(async (req, res) => {
 	const salt = await bcrypt.genSalt(10);
 	const hashedPassword = await bcrypt.hash(password, salt);
 
+	/**@type {userParams} */
 	const user = await User.create({
 		firstname,
 		lastname,
@@ -85,6 +113,7 @@ const login = asyncHandler(async (req, res) => {
 	// this method intentionally does NOT return all user fields
 	// use getMe, getUser, or getUserById to get all fields
 	if (user && isMatch) {
+		/** @type {userParams} */
 		res.json({
 			_id: user.id,
 			firstname: user.firstname,
@@ -271,6 +300,7 @@ const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
+/**@type {moduleExports} */
 module.exports = {
 	register,
 	login,

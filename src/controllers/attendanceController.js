@@ -42,7 +42,7 @@ const User = require("../models/usersDb/userModel.js");
  */
 
 /**
- * @typedef {Object} attendanceParams
+ * @typedef {Object} updatedUserResponse
  * @property {number} attendance
  * @property {string} firstname
  * @property {string} lastname
@@ -52,7 +52,7 @@ const User = require("../models/usersDb/userModel.js");
  * @property {number} accountType
  * @property {Array} roles
  * @property {string} subteam
- * @property {number} _id
+ * @property {number} _id 
  */
 
 const createMeeting = asyncHandler(async (req, res) => {
