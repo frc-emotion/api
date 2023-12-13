@@ -53,3 +53,4 @@ jobs:
                       docker stop api
                       docker rm api
                       docker run -d --name api -e NODE_ENV=production -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e MONGO_URI_PROD=${{secrets.MONGO_URI_PROD}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e PORT=3000 -p 3001:3000 ghcr.io/frc-emotion/prod-api:amd-latest
+                      docker logout ghcr.io
