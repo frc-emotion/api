@@ -64,6 +64,22 @@ const getMeetings = asyncHandler(async (req, res) => {
 	}
 });
 
+const getAllMeetings = asyncHandler(async (req, res) => {
+	try {
+		const meetings = await Meeting.find({});
+
+		if (meetings) {
+			res.status(200).json(meetings);
+		} else {
+			res.status(404).json({ message: "No meetings found" });
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
+	}
+});
+
 const deleteMeeting = asyncHandler(async (req, res) => {
 	const id = req.params.id;
 	if (id) {
@@ -189,4 +205,10 @@ const attendMeeting = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { createMeeting, attendMeeting, getMeetings, deleteMeeting };
+module.exports = {
+	createMeeting,
+	attendMeeting,
+	getMeetings,
+	deleteMeeting,
+	getAllMeetings,
+};
