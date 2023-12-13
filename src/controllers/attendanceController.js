@@ -46,11 +46,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 
 const getMeetings = asyncHandler(async (req, res) => {
 	try {
-		const meetings = await Meeting.find({})
-			.where("endTime")
-			.gt(Date.now())
-			.where("startTime")
-			.lt(Date.now());
+		const meetings = await Meeting.find({}).where("endTime").gt(Date.now());
 
 		if (meetings) {
 			res.status(200).json(meetings);
