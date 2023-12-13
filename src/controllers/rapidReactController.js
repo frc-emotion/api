@@ -33,13 +33,18 @@ async function create(req, nickname) {
 // @route GET /api/rapidReact?competition={competition}
 // @access Private
 const getGames = asyncHandler(async (req, res) => {
-	// 3 cases: id provided, competition queried, or all
-	const games = req.params.id
-		? await Game.findById(req.params.id)
-		: await Game.find(req.query);
+	try {
+		// 3 cases: id provided, competition queried, or all
+		const games = req.params.id
+			? await Game.findById(req.params.id)
+			: await Game.find(req.query);
 
-	console.log(req.headers.authorization);
-	res.status(200).json(games);
+		console.log(req.headers.authorization);
+		res.status(200).json(games);
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
+	}
 });
 
 // @desc Set Game
@@ -76,35 +81,49 @@ const setGame = asyncHandler(async (req, res) => {
 // @route PUT /api/rapidReact/:id
 // @access Private
 const updateGame = asyncHandler(async (req, res) => {
-	const game = await Game.findById(req.params.id);
+	try {
+		const game = await Game.findById(req.params.id);
 
-	if (!game) {
-		res.status(400);
-		throw new Error("Game not found");
+		if (!game) {
+			res.status(400);
+			throw new Error("Game not found");
+		}
+		game.editHistory.splice(0, 0, req.edit[0]);
+		req.body.editHistory = game.editHistory;
+		const updatedGame = await Game.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{
+				new: true,
+			}
+		);
+
+		res.status(200).json(updatedGame);
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-	game.editHistory.splice(0, 0, req.edit[0]);
-	req.body.editHistory = game.editHistory;
-	const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-	});
-
-	res.status(200).json(updatedGame);
 });
 
 // @desc Delete Game
 // @route DELETE /api/rapidReact/:id
 // @access Private
 const deleteGame = asyncHandler(async (req, res) => {
-	const game = await Game.findById(req.params.id);
+	try {
+		const game = await Game.findById(req.params.id);
 
-	if (!game) {
-		res.status(400);
-		throw new Error("Game not found");
+		if (!game) {
+			res.status(400);
+			throw new Error("Game not found");
+		}
+
+		await game.remove();
+
+		res.status(200).json({ id: req.params.id });
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-
-	await game.remove();
-
-	res.status(200).json({ id: req.params.id });
 });
 
 module.exports = {

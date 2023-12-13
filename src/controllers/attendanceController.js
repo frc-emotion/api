@@ -4,43 +4,49 @@ const { generateToken } = require("./userController.js");
 const User = require("../models/usersDb/userModel.js");
 
 const createMeeting = asyncHandler(async (req, res) => {
-	const { startTime, endTime, type, description, value, createdBy } =
-		req.body;
+	try {
+		const { startTime, endTime, type, description, value, createdBy } =
+			req.body;
 
-	if (
-		!startTime ||
-		!endTime ||
-		!type ||
-		!value ||
-		!createdBy ||
-		isNaN(value)
-	) {
-		res.status(400).json({
-			message: "Please fill in all required fields correctly",
+		if (
+			!startTime ||
+			!endTime ||
+			!type ||
+			!value ||
+			!createdBy ||
+			isNaN(value)
+		) {
+			res.status(400).json({
+				message: "Please fill in all required fields correctly",
+			});
+		}
+
+		const meeting = await Meeting.create({
+			startTime,
+			endTime,
+			type,
+			description,
+			value,
+			createdBy,
 		});
-	}
 
-	const meeting = await Meeting.create({
-		startTime,
-		endTime,
-		type,
-		description,
-		value,
-		createdBy,
-	});
-
-	if (meeting) {
-		res.status(201).json({
-			_id: meeting._id,
-			startTime: meeting.startTime,
-			endTime: meeting.endTime,
-			type: meeting.type,
-			description: meeting.description,
-			value: meeting.value,
-			createdBy: meeting.createdBy,
-		});
-	} else {
-		res.status(400).json({ message: "Invalid meeting data" });
+		if (meeting) {
+			res.status(201).json({
+				_id: meeting._id,
+				startTime: meeting.startTime,
+				endTime: meeting.endTime,
+				type: meeting.type,
+				description: meeting.description,
+				value: meeting.value,
+				createdBy: meeting.createdBy,
+			});
+		} else {
+			res.status(400).json({ message: "Invalid meeting data" });
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+		return;
 	}
 });
 
