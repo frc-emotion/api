@@ -47,6 +47,8 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: 22
                   script: |
+                      docker logout ghcr.io
+                      docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker pull ghcr.io/frc-emotion/prod-api:amd-latest
                       docker stop api
                       docker rm api
