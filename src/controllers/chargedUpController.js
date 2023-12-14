@@ -34,11 +34,16 @@ async function create(req) {
 }
 
 const getGames = asyncHandler(async (req, res) => {
-	const games = req.params.id
-		? await ChargedUp.findById(req.params.id)
-		: await ChargedUp.find(req.query);
+	try {
+		const games = req.params.id
+			? await ChargedUp.findById(req.params.id)
+			: await ChargedUp.find(req.query);
 
-	res.status(200).json(games);
+		res.status(200).json(games);
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
+	}
 });
 
 async function handleBlueAlliance(req) {
@@ -57,45 +62,60 @@ async function handleBlueAlliance(req) {
 }
 
 const createGame = asyncHandler(async (req, res) => {
-	const body = await handleBlueAlliance(req);
-	req.body = body;
-	const game = await create(req);
-	res.status(201).json(game);
+	try {
+		const body = await handleBlueAlliance(req);
+		req.body = body;
+		const game = await create(req);
+		res.status(201).json(game);
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
+	}
 });
 
 const updateGame = asyncHandler(async (req, res) => {
-	const game = await ChargedUp.findById(req.params.id);
-	if (!game) {
-		res.status(400);
-		throw new Error("Game not found");
-	}
-	game.editHistory.splice(0, 0, req.edit);
-	req.body.editHistory = game.editHistory;
-	const updatedGame = await ChargedUp.findByIdAndUpdate(
-		req.params.id,
-		req.body,
-		{
-			new: true,
+	try {
+		const game = await ChargedUp.findById(req.params.id);
+		if (!game) {
+			res.status(400);
+			throw new Error("Game not found");
 		}
-	);
+		game.editHistory.splice(0, 0, req.edit);
+		req.body.editHistory = game.editHistory;
+		const updatedGame = await ChargedUp.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{
+				new: true,
+			}
+		);
 
-	res.status(200).json(updatedGame);
+		res.status(200).json(updatedGame);
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
+	}
 });
 
 const deleteGame = asyncHandler(async (req, res) => {
-	const game = await ChargedUp.findById(req.params.id);
+	try {
+		const game = await ChargedUp.findById(req.params.id);
 
-	if (!game) {
-		res.status(400);
-		throw new Error("Game not found");
+		if (!game) {
+			res.status(400);
+			throw new Error("Game not found");
+		}
+
+		await game.remove();
+
+		res.status(200).json({
+			id: req.params.id,
+			message: "Game deleted",
+		});
+	} catch (e) {
+		res.status(500).json({ message: "Error" });
+		return;
 	}
-
-	await game.remove();
-
-	res.status(200).json({
-		id: req.params.id,
-		message: "Game deleted",
-	});
 });
 
 module.exports = {
