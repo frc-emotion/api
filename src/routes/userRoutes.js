@@ -23,7 +23,7 @@ router.get("/verify", checkToken);
 
 // get, delete, and update users
 // getting lists of users requires admin permission
-router.route("/").get(protect(3, getUsersAdmin, getUsersDefault));
+router.route("/").get(protect(3, getUsersAdmin));
 router
 	.get("/user/:id", protect(3, getUserByIdAdmin, getUserByIdDefault))
 	.delete("/user/:id", protect(3, deleteUser))
