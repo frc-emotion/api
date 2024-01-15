@@ -146,12 +146,16 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				res.status(404).json({ message: "User not found" });
 				return;
 			}
-
-			if (user.attendance?.at(-1)?.logs.includes(meetingId)) {
-				res.status(400).json({
-					message: "You have already attended this meeting",
-				});
-				return;
+			
+			if(Array.isArray(user.attendance)){
+				for(let i = 0; i < user.attendance?.length; i++) {
+					if (user.attendance?.at(i)?.logs.includes(meetingId)) {
+						res.status(400).json({
+							message: "You have already attended this meeting",
+						});
+						return;
+					}
+				}
 			}
 
 			let hoursLogged = 0;
