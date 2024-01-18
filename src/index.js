@@ -4,9 +4,13 @@ const dotenv = require("dotenv").config();
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
+const { Resend } = require("resend");
 const port = process.env.PORT || 5000;
 const api = process.env.API_URL;
+const RESEND_KEY = process.env.RESEND_KEY;
 const app = express();
+const resend = new Resend(RESEND_KEY);
+module.exports = { resend };
 const apiVersion = 2;
 const connAppend =
 	process.env.NODE_ENV === "production"

@@ -1,10 +1,10 @@
 ---
-name: "ci / prod"
+name: "ci / staging"
 
 on:
     push:
         branches:
-            - master
+            - staging
 
 jobs:
     deploy:
@@ -36,7 +36,7 @@ jobs:
                   context: .
                   platforms: linux/amd64
                   push: true
-                  tags: ghcr.io/frc-emotion/prod-api:amd-latest
+                  tags: ghcr.io/frc-emotion/staging-api:amd-latest
             - name: Connect to server and trigger redeploy of docker containers
               uses: appleboy/ssh-action@v1.0.0
               with:
@@ -47,15 +47,15 @@ jobs:
                   script: |
                       docker logout ghcr.io
                       docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-                      docker pull ghcr.io/frc-emotion/prod-api:amd-latest
-                      docker stop api
-                      docker rm api
-                      docker run -d --name api -e NODE_ENV=production -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e MONGO_URI_PROD=${{secrets.MONGO_URI_PROD}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e RESEND_KEY=${{secrets.RESEND_KEY}} -e PORT=3000 -p 3001:3000 ghcr.io/frc-emotion/prod-api:amd-latest
+                      docker pull ghcr.io/frc-emotion/staging-api:amd-latest
+                      docker stop api-staging
+                      docker rm api-staging
+                      docker run -d --name api-staging -e NODE_ENV=development -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e RESEND_KEY=${{secrets.RESEND_KEY}} -e PORT=3000 -p 5555:3000 ghcr.io/frc-emotion/staging-api:amd-latest
                       docker logout ghcr.io
             - name: Delete Package Versions
               uses: actions/delete-package-versions@v5.0.0
               with:
-                  package-name: prod-api
+                  package-name: staging-api
                   delete-only-untagged-versions: true
                   package-type: container
                   min-versions-to-keep: 1

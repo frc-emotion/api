@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema(
 		accountUpdateVersion: { type: Number, required: true },
 		forgotPassword: { type: Object, required: false },
 		// forgotPassword: {
-		// code: { type: Number },
+		// code: { type: String },
 		// expiresAt: { type: Number },
 		// },
 		socials: { type: Array, required: false },
