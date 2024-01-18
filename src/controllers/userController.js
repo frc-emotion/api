@@ -90,13 +90,82 @@ const forgot = asyncHandler(async (req, res) => {
 	if (!req.body.email)
 		return res.status(400).json({ message: "Please fill in all fields" });
 	try {
+		const user = await User.find({ email: req.body.email });
+		if (!user) {
+			return res.status(400).json({ message: "User does not exist" });
+		}
+		const expires = Date.now() + hours(72);
+		const otp = randStr(8).toLowerCase();
+		const salt = await bcrypt.genSalt(10);
+		const hashed = await bcrypt.hash(otp, salt);
+		const updated = await User.findByIdAndUpdate(
+			user._id,
+			{
+				forgotPassword: {
+					code: hashed,
+					expiresAt: expires,
+				},
+			},
+			{
+				new: true,
+			}
+		);
+		if (!updated) {
+			return res.status(500).json({ message: "Server Error" });
+		}
 		resend.emails.send({
 			from: "mail@team2658.org",
 			to: req.body.email,
 			subject: "Reset Password",
-			html: `<a href="team2658.org">meow</a>`,
+			html: `<a href="team2658.org/reset-password/">Click here to reset your password</a>
+			<br>
+			<h1>Your password reset code: </h1>
+			<h2>${otp}</h2>
+			 <h3>Expires in 72 hours</h3>`,
 		});
 		return res.status(200).json({ message: "Email sent" });
+	} catch (e) {
+		console.error(e);
+		return res.status(500).json({ message: "Server Error:" + e });
+	}
+});
+
+const resetForgotten = asyncHandler(async (req, res) => {
+	const { code, password, email } = req.body;
+	if (!code || !password || !email) {
+		return res.status(400).json({ message: "Please fill in all fields" });
+	}
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(400).json({ message: "User does not exist" });
+		}
+		if (!user.forgotPassword?.code || !user.forgotPassword?.expiresAt) {
+			return res
+				.status(400)
+				.json({ message: "Password reset not valid for this user" });
+		}
+		if (Date.now() > user.forgotPassword.expiresAt) {
+			return res.status(400).json({ message: "Code has expired" });
+		}
+		const isMatch = await bcrypt.compare(code, user.forgotPassword.code);
+		if (!isMatch) {
+			return res.status(400).json({ message: "Invalid code" });
+		}
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+		const updated = await User.findByIdAndUpdate(
+			user._id,
+			{
+				password: hashedPassword,
+				forgotPassword: null,
+			},
+			{
+				new: true,
+			}
+		);
+		if (updated) return res.status(200).json({ message: "Password reset" });
+		return res.status(500).json({ message: "Password reset failed" });
 	} catch (e) {
 		console.error(e);
 		return res.status(500).json({ message: "Server Error:" + e });
@@ -355,4 +424,28 @@ module.exports = {
 	updateUser,
 	generateToken,
 	forgot,
+	resetForgotten,
 };
+
+function hours(hours) {
+	return hours * 60 * 60 * 1000;
+}
+
+function randInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+/**
+ *
+ * @param {number} length
+ * @returns {string}
+ */
+function randStr(length) {
+	let result = "";
+	const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+	const charactersLength = characters.length;
+	for (let i = 0; i < length; i++) {
+		result += characters[randInt(0, charactersLength - 1)];
+	}
+	return result;
+}
