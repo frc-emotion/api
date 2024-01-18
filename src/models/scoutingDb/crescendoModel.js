@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const crescendoSchema = mongoose.Schema(
 	{
+		editHistory: Array,
 		competition: { type: String, required: true },
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
@@ -26,8 +27,12 @@ const crescendoSchema = mongoose.Schema(
 		ranking: {
 			melody: Boolean,
 			ensemble: Boolean
-		}
+		},
+		comments: String,
 	},
+	{
+		timestamps: true,
+	}
 );
 
 module.exports = global.scoutingDb.model("Crescendo", crescendoSchema);

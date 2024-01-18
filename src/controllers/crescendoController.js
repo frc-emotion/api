@@ -5,6 +5,7 @@ const fetch = (...args) =>
 
 async function create(req) {
 	return await Crescendo.create({
+		editHistory: req.edit,
 		competition: req.body.competition,
 		matchNumber: req.body.matchNumber,
 		teamNumber: req.body.teamNumber,
@@ -14,6 +15,7 @@ async function create(req) {
 		teleop: req.body.teleop,
 		stage: req.body.stage,
 		ranking: req.body.ranking,
+		comments: req.body.comments,
 	});
 }
 
