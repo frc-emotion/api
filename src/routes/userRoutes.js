@@ -22,7 +22,7 @@ router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
 router.get("/verify", checkToken);
 router.post("/forgot-password", forgot);
-router.patch("/reset-password", resetForgotten);
+router.post("/reset-password", resetForgotten);
 
 // get, delete, and update users
 // getting lists of users requires admin permission
