@@ -88,20 +88,18 @@ const register = asyncHandler(async (req, res) => {
 
 const forgot = asyncHandler(async (req, res) => {
 	const { email } = req.body;
-	console.log(email);
+	console.log("reset password for: " + email);
 	if (!email)
 		return res.status(400).json({ message: "Please fill in all fields" });
 	try {
 		const user = await User.findOne({ email: email });
-		console.log(user);
 		if (!user) {
 			return res.status(400).json({ message: "User does not exist" });
 		}
 		const expires = Date.now() + hours(72);
-		const otp = randStr(8).toLowerCase();
+		const otp = randStr(8).toUpperCase();
 		const salt = await bcrypt.genSalt(10);
 		const hashed = await bcrypt.hash(otp, salt);
-		console.log(hashed);
 		const updated = await User.findByIdAndUpdate(
 			user._id,
 			{
@@ -121,11 +119,13 @@ const forgot = asyncHandler(async (req, res) => {
 			from: "mail@team2658.org",
 			to: email,
 			subject: "Reset Password",
-			html: `<a href="team2658.org/reset-password/">Click here to reset your password</a>
-			<br>
+			html: `
 			<h1>Your password reset code: </h1>
 			<h2>${otp}</h2>
-			 <h3>Expires in 72 hours</h3>`,
+			<br>
+			<a href="team2658.org/reset-password/">Click here to reset your password</a>
+			 <h3>Expires in 72 hours</h3>
+			 `,
 		});
 		return res.status(200).json({ message: "Email sent" });
 	} catch (e) {
@@ -152,7 +152,10 @@ const resetForgotten = asyncHandler(async (req, res) => {
 		if (Date.now() > user.forgotPassword.expiresAt) {
 			return res.status(400).json({ message: "Code has expired" });
 		}
-		const isMatch = await bcrypt.compare(code, user.forgotPassword.code);
+		const isMatch = await bcrypt.compare(
+			code.toUpperCase(),
+			user.forgotPassword.code
+		);
 		if (!isMatch) {
 			return res.status(400).json({ message: "Invalid code" });
 		}
@@ -162,7 +165,7 @@ const resetForgotten = asyncHandler(async (req, res) => {
 			user._id,
 			{
 				password: hashedPassword,
-				forgotPassword: null,
+				$unset: { forgotPassword: "" },
 			},
 			{
 				new: true,
