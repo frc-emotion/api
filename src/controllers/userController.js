@@ -116,7 +116,7 @@ const forgot = asyncHandler(async (req, res) => {
 			return res.status(500).json({ message: "Server Error" });
 		}
 		resend.emails.send({
-			from: "mail@team2658.org",
+			from: "noreply@team2658.org",
 			to: email,
 			subject: "Reset Password",
 			html: `
