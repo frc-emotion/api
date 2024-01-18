@@ -52,3 +52,10 @@ jobs:
                       docker rm api-staging
                       docker run -d --name api-staging -e NODE_ENV=development -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e RESEND_KEY=${{secrets.RESEND_KEY}} -e PORT=3000 -p 5555:3000 ghcr.io/frc-emotion/staging-api:amd-latest
                       docker logout ghcr.io
+            - name: Delete Package Versions
+              uses: actions/delete-package-versions@v5.0.0
+              with:
+                  package-name: staging-api
+                  delete-only-untagged-versions: true
+                  package-type: container
+                  min-versions-to-keep: 1
