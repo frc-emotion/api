@@ -50,5 +50,12 @@ jobs:
                       docker pull ghcr.io/frc-emotion/prod-api:amd-latest
                       docker stop api
                       docker rm api
-                      docker run -d --name api -e NODE_ENV=production -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e MONGO_URI_PROD=${{secrets.MONGO_URI_PROD}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e PORT=3000 -p 3001:3000 ghcr.io/frc-emotion/prod-api:amd-latest
+                      docker run -d --name api -e NODE_ENV=production -e API_URL='' -e MONGO_URI_DEV=${{secrets.MONGO_URI_DEV}} -e MONGO_URI_PROD=${{secrets.MONGO_URI_PROD}} -e JWT_SECRET=${{secrets.JWT_SECRET}} -e TBA_KEY=${{secrets.TBA_KEY}} -e RESEND_KEY=${{secrets.RESEND_KEY}} -e PORT=3000 -p 3001:3000 ghcr.io/frc-emotion/prod-api:amd-latest
                       docker logout ghcr.io
+            - name: Delete Package Versions
+              uses: actions/delete-package-versions@v5.0.0
+              with:
+                  package-name: prod-api
+                  delete-only-untagged-versions: true
+                  package-type: container
+                  min-versions-to-keep: 1
