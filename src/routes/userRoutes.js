@@ -12,6 +12,7 @@ const {
 	getUserByIdDefault,
 	getUserByIdAdmin,
 	deleteUser,
+	forgot,
 	updateUser,
 } = require("../controllers/userController");
 const protect = require("../middleware/authMiddleware");
@@ -20,6 +21,7 @@ const protect = require("../middleware/authMiddleware");
 router.post("/register", register);
 router.post("/login", login); // login returns jwt to user
 router.get("/verify", checkToken);
+router.post("/forgot", forgot);
 
 // get, delete, and update users
 // getting lists of users requires admin permission

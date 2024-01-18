@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
+const { resend } = require("../index");
 
 const register = asyncHandler(async (req, res) => {
 	try {
@@ -85,48 +86,65 @@ const register = asyncHandler(async (req, res) => {
 	}
 });
 
+const forgot = asyncHandler(async (req, res) => {
+	if (!req.body.email)
+		return res.status(400).json({ message: "Please fill in all fields" });
+	try {
+		resend.emails.send({
+			from: "mail@team2658.org",
+			to: req.body.email,
+			subject: "Reset Password",
+			html: `<a href="team2658.org">meow</a>`,
+		});
+		return res.status(200).json({ message: "Email sent" });
+	} catch (e) {
+		console.error(e);
+		return res.status(500).json({ message: "Server Error:" + e });
+	}
+});
+
 const login = asyncHandler(async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        if (!username || !password) {
-            return res
-                .status(400)
-                .json({ message: "Please fill in all fields" });
-        }
+	try {
+		const { username, password } = req.body;
+		if (!username || !password) {
+			return res
+				.status(400)
+				.json({ message: "Please fill in all fields" });
+		}
 
-        const user = await User.findOne({
-            $or: [{ username }, { email: username }],
-        });
-        if (!user) {
-            return res.status(404).json({ message: "User does not exist" });
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!user || !isMatch) {
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
+		const user = await User.findOne({
+			$or: [{ username }, { email: username }],
+		});
+		if (!user) {
+			return res.status(404).json({ message: "User does not exist" });
+		}
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!user || !isMatch) {
+			return res.status(400).json({ message: "Invalid credentials" });
+		}
 
-        // this method intentionally does NOT return all user fields
-        // use getMe, getUser, or getUserById to get all fields
-        if (user && isMatch) {
-            return res.json({
-                _id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                username: user.username,
-                email: user.email,
-                grade: user.grade,
-                phone: user.phone,
-                attendance: user.attendance,
-                accountType: user.accountType,
-                roles: user.roles,
-                token: generateToken(user._id),
-                subteam: user.subteam,
-            });
-        }
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ message: "Error" });
-    }
+		// this method intentionally does NOT return all user fields
+		// use getMe, getUser, or getUserById to get all fields
+		if (user && isMatch) {
+			return res.json({
+				_id: user.id,
+				firstname: user.firstname,
+				lastname: user.lastname,
+				username: user.username,
+				email: user.email,
+				grade: user.grade,
+				phone: user.phone,
+				attendance: user.attendance,
+				accountType: user.accountType,
+				roles: user.roles,
+				token: generateToken(user._id),
+				subteam: user.subteam,
+			});
+		}
+	} catch (e) {
+		console.error(e);
+		res.status(500).json({ message: "Error" });
+	}
 });
 
 const checkToken = asyncHandler(async (req, res) => {
@@ -336,4 +354,5 @@ module.exports = {
 	deleteUser,
 	updateUser,
 	generateToken,
+	forgot,
 };
