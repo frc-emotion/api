@@ -87,10 +87,13 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const forgot = asyncHandler(async (req, res) => {
-	if (!req.body.email)
+	const { email } = req.body;
+	console.log(email);
+	if (!email)
 		return res.status(400).json({ message: "Please fill in all fields" });
 	try {
-		const user = await User.find({ email: req.body.email });
+		const user = await User.findOne({ email: email });
+		console.log(user);
 		if (!user) {
 			return res.status(400).json({ message: "User does not exist" });
 		}
@@ -98,6 +101,7 @@ const forgot = asyncHandler(async (req, res) => {
 		const otp = randStr(8).toLowerCase();
 		const salt = await bcrypt.genSalt(10);
 		const hashed = await bcrypt.hash(otp, salt);
+		console.log(hashed);
 		const updated = await User.findByIdAndUpdate(
 			user._id,
 			{
@@ -115,7 +119,7 @@ const forgot = asyncHandler(async (req, res) => {
 		}
 		resend.emails.send({
 			from: "mail@team2658.org",
-			to: req.body.email,
+			to: email,
 			subject: "Reset Password",
 			html: `<a href="team2658.org/reset-password/">Click here to reset your password</a>
 			<br>
