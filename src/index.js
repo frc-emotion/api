@@ -90,6 +90,13 @@ const routes = [
 		minVersion: 1,
 	},
 	{
+		name: "crescendo",
+		routePath: [
+			"./routes/crescendoRoutes.js",
+		],
+		minVersion: 2,
+	},
+	{
 		name: "attendance",
 		routePath: ["./routes/attendanceRoutes.js"],
 		minVersion: 2,
