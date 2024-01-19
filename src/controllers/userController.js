@@ -3,6 +3,31 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 const { resend } = require("../index");
+const Bottleneck = require("bottleneck");
+const { RateLimiter } = require("limiter");
+
+const emailLimiter = new Bottleneck({
+	minTime: 10000,
+	maxConcurrent: 1,
+	reservoir: 100,
+	reservoirRefreshAmount: 24 * 3600 * 1000,
+});
+
+const emailLimiterPerPerson = new RateLimiter({
+	tokensPerInterval: 2,
+	interval: 24 * 3600 * 1000 * 7,
+	fireImmediately: true,
+});
+
+const loginLimiter = new RateLimiter({
+	tokensPerInterval: 1,
+	interval: 30 * 1000,
+});
+
+const loginBottleneck = new Bottleneck({
+	minTime: 750,
+	maxConcurrent: 1,
+});
 
 const register = asyncHandler(async (req, res) => {
 	try {
@@ -86,7 +111,7 @@ const register = asyncHandler(async (req, res) => {
 	}
 });
 
-const forgot = asyncHandler(async (req, res) => {
+const _forgot = asyncHandler(async (req, res) => {
 	const { email } = req.body;
 	console.log("reset password for: " + email);
 	if (!email)
@@ -115,6 +140,12 @@ const forgot = asyncHandler(async (req, res) => {
 		if (!updated) {
 			return res.status(500).json({ message: "Server Error" });
 		}
+		const remaining = await emailLimiterPerPerson.removeTokens(1);
+		if (remaining < 0) {
+			return res
+				.status(429)
+				.json({ message: "Too many requests, try again later" });
+		}
 		resend.emails.send({
 			from: "noreply@team2658.org",
 			to: email,
@@ -133,6 +164,11 @@ const forgot = asyncHandler(async (req, res) => {
 		return res.status(500).json({ message: "Server Error:" + e });
 	}
 });
+
+/**
+ * @type {typeof _forgot}
+ */
+const forgot = emailLimiter.wrap(_forgot);
 
 const resetForgotten = asyncHandler(async (req, res) => {
 	const { code, password, email } = req.body;
@@ -179,7 +215,7 @@ const resetForgotten = asyncHandler(async (req, res) => {
 	}
 });
 
-const login = asyncHandler(async (req, res) => {
+const _login = asyncHandler(async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		if (!username || !password) {
@@ -198,7 +234,12 @@ const login = asyncHandler(async (req, res) => {
 		if (!user || !isMatch) {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
-
+		const remainingTokens = await loginLimiter.removeTokens(1);
+		if (remainingTokens < 0) {
+			return res
+				.status(429)
+				.json({ message: "Too many requests, try again later" });
+		}
 		// this method intentionally does NOT return all user fields
 		// use getMe, getUser, or getUserById to get all fields
 		if (user && isMatch) {
@@ -222,6 +263,11 @@ const login = asyncHandler(async (req, res) => {
 		res.status(500).json({ message: "Error" });
 	}
 });
+
+/**
+ * @type {typeof _login}
+ */
+const login = loginBottleneck.wrap(_login);
 
 const checkToken = asyncHandler(async (req, res) => {
 	try {

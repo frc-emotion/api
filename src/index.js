@@ -11,6 +11,10 @@ const RESEND_KEY = process.env.RESEND_KEY;
 const app = express();
 const resend = new Resend(RESEND_KEY);
 module.exports = { resend };
+const Bottleneck = require("bottleneck");
+const globalRateLimit = new Bottleneck({
+	minTime: 200,
+});
 const apiVersion = 2;
 const connAppend =
 	process.env.NODE_ENV === "production"
@@ -45,13 +49,15 @@ app.use(express.urlencoded({ extended: false }));
 
 // Add Access Control Allow Origin headers
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "*");
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET, POST, OPTIONS, PUT, DELETE"
-	);
-	next();
+	globalRateLimit.schedule(() => {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "*");
+		res.setHeader(
+			"Access-Control-Allow-Methods",
+			"GET, POST, OPTIONS, PUT, DELETE, PATCH"
+		);
+		next();
+	});
 });
 
 const routes = [
