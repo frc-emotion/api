@@ -123,7 +123,7 @@ const _forgot = asyncHandler(async (req, res) => {
 				? { $unset: { rateLimit: "" } }
 				: {
 						rateLimit: {
-							count: 1 * user.rateLimit?.count + 1,
+							count: user.rateLimit?.count ?? 0 + 1,
 							expiresAt: Date.now() + hours(72),
 						},
 				  };
