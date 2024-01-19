@@ -12,8 +12,26 @@ const app = express();
 const resend = new Resend(RESEND_KEY);
 module.exports = { resend };
 const Bottleneck = require("bottleneck");
+const { rateLimit } = require("express-rate-limit");
+
+const passwordResetRateLimit = rateLimit({
+	windowMs: 60 * 1000 * 60 * 24 * 7,
+	limit: 2,
+	standardHeaders: "draft-7",
+	legacyHeaders: false,
+	skipFailedRequests: true,
+	keyGenerator: (req, res) => req.body.email,
+});
+
+const loginRateLimit = rateLimit({
+	windowMs: 30 * 1000,
+	limit: 1,
+	standardHeaders: "draft-7",
+	legacyHeaders: false,
+});
+
 const globalRateLimit = new Bottleneck({
-	minTime: 200,
+	minTime: 100,
 });
 const apiVersion = 2;
 const connAppend =
@@ -121,6 +139,9 @@ app.all("*", (req, res) => {
 
 app.use(cors);
 app.use(errorHandler);
+
+app.use("/v2/users/forgot-password", passwordResetRateLimit);
+app.use("/v2/users/login", loginRateLimit);
 
 app.listen(port, () => {
 	console.log("Server started at: " + `localhost:${port}`.underline.green);
