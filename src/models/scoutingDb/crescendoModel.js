@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 
 const crescendoSchema = mongoose.Schema(
 	{
+
 		editHistory: Array,
 		competition: { type: String, required: true },
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
 		teamName: { type: String, required: true },
-		rankingPoints: Number,
+		rankingPoints: {type: Number, required: true},
+		score: { type: Number, required: true },
+		penaltyPointsEarned: { type: Number, required: true },
+		won: {type: Boolean, required: true},
+		tied: { type: Boolean, required: true },
+		defensive: { type: Boolean, required: true },
+		brokeDown: {type: Boolean, required: true},
 		auto: {
 			leave: Boolean,
 			ampNotes: Number,
@@ -20,7 +27,7 @@ const crescendoSchema = mongoose.Schema(
 			speakerAmp: Number
 		},
 		stage: {
-			state: "NOT_PARKED" | "PARKED" | "ONSTAGE" | "ONSTAGE_SPOTLIT",
+			state: String,
 			harmony: Number,
 			trapNotes: Number
 		},

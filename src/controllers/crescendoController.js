@@ -11,6 +11,12 @@ async function create(req) {
 		teamNumber: req.body.teamNumber,
 		teamName: req.body.teamName,
 		rankingPoints: req.body.rankingPoints,
+		score: req.body.score,
+		penaltyPointsEarned: req.body.penaltyPointsEarned,
+		won: req.body.won,
+		tied: req.body.tied,
+		defensive: req.body.defensive,
+		brokeDown: req.body.brokeDown,
 		auto: req.body.auto,
 		teleop: req.body.teleop,
 		stage: req.body.stage,
@@ -63,8 +69,8 @@ const updateGame = asyncHandler(async (req, res) => {
 	try {
 		const game = await Crescendo.findById(req.params.id);
 		if (!game) {
-			res.status(400);
-			throw new Error("Game not found");
+			res.status(404).json({ message: "Game not found" });
+			return;
 		}
 		game.editHistory.splice(0, 0, req.edit);
 		req.body.editHistory = game.editHistory;
@@ -88,8 +94,8 @@ const deleteGame = asyncHandler(async (req, res) => {
 		const game = await Crescendo.findById(req.params.id);
 
 		if (!game) {
-			res.status(400);
-			throw new Error("Game not found");
+			res.status(404).json({ message: "Game not found" });
+			return;
 		}
 
 		await game.remove();
