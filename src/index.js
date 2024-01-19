@@ -10,7 +10,6 @@ const api = process.env.API_URL;
 const RESEND_KEY = process.env.RESEND_KEY;
 const app = express();
 const resend = new Resend(RESEND_KEY);
-module.exports = { resend };
 const Bottleneck = require("bottleneck");
 const { rateLimit } = require("express-rate-limit");
 
@@ -19,7 +18,14 @@ const loginRateLimit = rateLimit({
 	max: 1,
 	standardHeaders: "draft-7",
 	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({
+			message: "Too many requests, please try again in 30 seconds",
+		});
+	},
 });
+
+module.exports = { resend, loginRateLimit };
 
 const globalRateLimit = new Bottleneck({
 	minTime: 100,
@@ -130,11 +136,6 @@ app.all("*", (req, res) => {
 
 app.use(cors);
 app.use(errorHandler);
-
-app.use("/v2/users/forgot-password", loginRateLimit);
-app.use("/v2/users/login", loginRateLimit);
-app.use("/v2/users/register", loginRateLimit);
-app.use("/v2/users/reset-password", loginRateLimit);
 
 app.listen(port, () => {
 	console.log("Server started at: " + `localhost:${port}`.underline.green);
