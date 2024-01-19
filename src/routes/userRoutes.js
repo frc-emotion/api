@@ -16,13 +16,14 @@ const {
 	updateUser,
 } = require("../controllers/userController");
 const protect = require("../middleware/authMiddleware");
+const { loginRateLimit } = require("../index");
 
 // handle user signups and logins
-router.post("/register", register);
-router.post("/login", login); // login returns jwt to user
+router.post("/register", loginRateLimit, register);
+router.post("/login", loginRateLimit, login); // login returns jwt to user
 router.get("/verify", checkToken);
-router.post("/forgot-password", forgot);
-router.post("/reset-password", resetForgotten);
+router.post("/forgot-password", loginRateLimit, forgot);
+router.post("/reset-password", loginRateLimit, resetForgotten);
 
 // get, delete, and update users
 // getting lists of users requires admin permission

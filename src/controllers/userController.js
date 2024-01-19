@@ -3,6 +3,20 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 const { resend } = require("../index");
+const Bottleneck = require("bottleneck");
+
+const emailLimiter = new Bottleneck({
+	minTime: 10000,
+	maxConcurrent: 1,
+	reservoir: 100,
+	reservoirRefreshInterval: 24 * 3600 * 1000,
+	reservoirRefreshAmount: 100,
+});
+
+const loginBottleneck = new Bottleneck({
+	minTime: 750,
+	maxConcurrent: 1,
+});
 
 const register = asyncHandler(async (req, res) => {
 	try {
@@ -86,7 +100,7 @@ const register = asyncHandler(async (req, res) => {
 	}
 });
 
-const forgot = asyncHandler(async (req, res) => {
+const _forgot = asyncHandler(async (req, res) => {
 	const { email } = req.body;
 	console.log("reset password for: " + email);
 	if (!email)
@@ -96,6 +110,24 @@ const forgot = asyncHandler(async (req, res) => {
 		if (!user) {
 			return res.status(400).json({ message: "User does not exist" });
 		}
+		if (
+			user.rateLimit?.count >= 3 &&
+			Date.now() < user.rateLimit.expiresAt
+		) {
+			return res.status(429).json({
+				message: "Too many reset requests, try again in 3 days",
+			});
+		}
+		const o =
+			user.rateLimit?.expiresAt && Date.now() > user.rateLimit.expiresAt
+				? { $unset: { rateLimit: "" } }
+				: {
+						rateLimit: {
+							count: user.rateLimit?.count >=0? user.rateLimit.count + 1 : 1,
+							expiresAt: Date.now() + hours(72),
+						},
+				  };
+
 		const expires = Date.now() + hours(72);
 		const otp = randStr(8).toUpperCase();
 		const salt = await bcrypt.genSalt(10);
@@ -107,6 +139,7 @@ const forgot = asyncHandler(async (req, res) => {
 					code: hashed,
 					expiresAt: expires,
 				},
+				...o,
 			},
 			{
 				new: true,
@@ -133,6 +166,11 @@ const forgot = asyncHandler(async (req, res) => {
 		return res.status(500).json({ message: "Server Error:" + e });
 	}
 });
+
+/**
+ * @type {typeof _forgot}
+ */
+const forgot = emailLimiter.wrap(_forgot);
 
 const resetForgotten = asyncHandler(async (req, res) => {
 	const { code, password, email } = req.body;
@@ -179,7 +217,7 @@ const resetForgotten = asyncHandler(async (req, res) => {
 	}
 });
 
-const login = asyncHandler(async (req, res) => {
+const _login = asyncHandler(async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		if (!username || !password) {
@@ -198,7 +236,6 @@ const login = asyncHandler(async (req, res) => {
 		if (!user || !isMatch) {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
-
 		// this method intentionally does NOT return all user fields
 		// use getMe, getUser, or getUserById to get all fields
 		if (user && isMatch) {
@@ -222,6 +259,11 @@ const login = asyncHandler(async (req, res) => {
 		res.status(500).json({ message: "Error" });
 	}
 });
+
+/**
+ * @type {typeof _login}
+ */
+const login = loginBottleneck.wrap(_login);
 
 const checkToken = asyncHandler(async (req, res) => {
 	try {

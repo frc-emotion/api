@@ -10,7 +10,26 @@ const api = process.env.API_URL;
 const RESEND_KEY = process.env.RESEND_KEY;
 const app = express();
 const resend = new Resend(RESEND_KEY);
-module.exports = { resend };
+const Bottleneck = require("bottleneck");
+const { rateLimit } = require("express-rate-limit");
+
+const loginRateLimit = rateLimit({
+	windowMs: 30 * 1000,
+	max: 5,
+	standardHeaders: "draft-7",
+	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({
+			message: "Too many requests, please try again in 30 seconds",
+		});
+	},
+});
+
+module.exports = { resend, loginRateLimit };
+
+const globalRateLimit = new Bottleneck({
+	minTime: 100,
+});
 const apiVersion = 2;
 const connAppend =
 	process.env.NODE_ENV === "production"
@@ -45,13 +64,15 @@ app.use(express.urlencoded({ extended: false }));
 
 // Add Access Control Allow Origin headers
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "*");
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET, POST, OPTIONS, PUT, DELETE"
-	);
-	next();
+	globalRateLimit.schedule(() => {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "*");
+		res.setHeader(
+			"Access-Control-Allow-Methods",
+			"GET, POST, OPTIONS, PUT, DELETE, PATCH"
+		);
+		next();
+	});
 });
 
 const routes = [
