@@ -110,6 +110,24 @@ const _forgot = asyncHandler(async (req, res) => {
 		if (!user) {
 			return res.status(400).json({ message: "User does not exist" });
 		}
+		if (
+			user.rateLimit?.count >= 3 &&
+			Date.now() < user.rateLimit.expiresAt
+		) {
+			return res.status(429).json({
+				message: "Too many reset requests, try again in 3 days",
+			});
+		}
+		const o =
+			user.rateLimit?.expiresAt && Date.now() > user.rateLimit.expiresAt
+				? { $unset: { rateLimit: "" } }
+				: {
+						rateLimit: {
+							count: Number(user.rateLimit?.count)++,
+							expiresAt: Date.now() + hours(72),
+						},
+				  };
+
 		const expires = Date.now() + hours(72);
 		const otp = randStr(8).toUpperCase();
 		const salt = await bcrypt.genSalt(10);
@@ -121,6 +139,7 @@ const _forgot = asyncHandler(async (req, res) => {
 					code: hashed,
 					expiresAt: expires,
 				},
+				...o,
 			},
 			{
 				new: true,

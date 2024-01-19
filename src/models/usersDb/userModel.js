@@ -18,6 +18,11 @@ const userSchema = mongoose.Schema(
 		// code: { type: String },
 		// expiresAt: { type: Number },
 		// },
+		rateLimit: { type: Object, required: false },
+		// rateLimit: {
+		// count: Number,
+		// expiresAt: Number,
+		// },
 		socials: { type: Array, required: false },
 
 		parents: { type: Array, required: false },
