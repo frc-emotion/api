@@ -9,7 +9,8 @@ const seasonSchema = mongoose.Schema(
 		}, */
 		year: { type: Number, required: true, unique: true },
 		name: { type: String, required: true },
-		competitions: Array,
+		competitions: { type: [String], required: true }, //array of strings
+		attendancePeriods: { type: [String], required: false }, //array of strings
 	},
 	{
 		timestamps: true,

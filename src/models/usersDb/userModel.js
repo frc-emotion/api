@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema(
 		socials: { type: Array, required: false },
 
 		parents: { type: Array, required: false },
-		attendance: { type: Array, required: false }, //array of attendance objects, sorted by semester with 0 = 2023 fall
+		attendance: { type: Object, required: false }, //map of string to attendance object
 
 		children: { type: Array, required: false },
 		spouse: { type: Object, required: false },

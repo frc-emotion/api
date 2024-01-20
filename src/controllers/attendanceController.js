@@ -2,19 +2,28 @@ const asyncHandler = require("express-async-handler");
 const Meeting = require("../models/usersDb/meetingModel.js");
 const { generateToken } = require("./userController.js");
 const User = require("../models/usersDb/userModel.js");
+const Season = require("../models/scoutingDb/seasonModel.js");
 
 const createMeeting = asyncHandler(async (req, res) => {
 	try {
-		const { startTime, endTime, type, description, value, createdBy } =
-			req.body;
+		const {
+			startTime,
+			endTime,
+			type,
+			description,
+			value,
+			attendancePeriod,
+		} = req.body;
+
+		const createdBy = req.user._id;
 
 		if (
 			!startTime ||
 			!endTime ||
 			!type ||
 			!value ||
-			!createdBy ||
-			isNaN(value)
+			isNaN(value) ||
+			!attendancePeriod
 		) {
 			res.status(400).json({
 				message: "Please fill in all required fields correctly",
@@ -28,6 +37,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 			description,
 			value,
 			createdBy,
+			attendancePeriod,
 		});
 
 		if (meeting) {
@@ -39,6 +49,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 				description: meeting.description,
 				value: meeting.value,
 				createdBy: meeting.createdBy,
+				attendancePeriod: meeting.attendancePeriod,
 			});
 		} else {
 			res.status(400).json({ message: "Invalid meeting data" });
@@ -146,23 +157,33 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				res.status(404).json({ message: "User not found" });
 				return;
 			}
-			
-			if(Array.isArray(user.attendance)){
-				for(let i = 0; i < user.attendance?.length; i++) {
-					if (user.attendance?.at(i)?.logs.includes(meetingId)) {
-						res.status(400).json({
-							message: "You have already attended this meeting",
-						});
-						return;
-					}
+
+			const att = {};
+			const compat = ["2023fall", "2024spring"];
+			if (Array.isArray(user.attendance)) {
+				for (let i = 0; i < user.attendance.length; i++) {
+					const seasons = await Season.find({ year: 2023 + i });
+					att[seasons.attendancePeriod[0] ?? compat[i]] =
+						user.attendance?.at(i);
 				}
 			}
 
+			if (
+				att[meeting.attendancePeriod]?.logs?.includes(meetingId) == true
+			) {
+				res.status(400).json({
+					message: "You have already logged this meeting",
+				});
+				return;
+			}
+
 			let hoursLogged = 0;
-			if (Array.isArray(user.attendance?.at(1)?.logs)) {
+			if (Array.isArray(att[meeting.attendancePeriod]?.logs)) {
 				hoursLogged = Number(
 					meeting.value +
-						(await getHoursFromLogs(user.attendance?.at(1)?.logs))
+						(await getHoursFromLogs(
+							att[meeting.attendancePeriod]?.logs
+						))
 				);
 			} else {
 				hoursLogged = meeting.value;
@@ -170,17 +191,22 @@ const attendMeeting = asyncHandler(async (req, res) => {
 
 			const attendance = {
 				totalHoursLogged: hoursLogged,
-				logs: [...(user.attendance?.at(1)?.logs ?? []), meetingId],
+				logs: [
+					...(att[meeting.attendancePeriod]?.logs ?? []),
+					meetingId,
+				],
 				completedMarketingAssignment:
-					user.attendance?.at(1)?.completedMarketingAssignment ===
-					true,
+					att[meeting.attendancePeriod]
+						?.completedMarketingAssignment === true,
 			};
 
 			console.log(attendance);
 
+			att[meeting.attendancePeriod] = attendance;
+
 			const updated = await User.findByIdAndUpdate(
 				userId,
-				{ attendance: [user.attendance[0], attendance] },
+				{ attendance: { ...att } },
 				{ new: true }
 			);
 

@@ -81,6 +81,7 @@ const createSeason = asyncHandler(async (req, res) => {
 			year: req.body.year,
 			name: req.body.name,
 			competitions: req.body.competitions,
+			attendancePeriods: req.body.attendancePeriods,
 		});
 		res.status(201).json(season);
 	} catch (e) {
@@ -97,6 +98,9 @@ const updateSeason = asyncHandler(async (req, res) => {
 			season.competitions = req.body.competitions
 				? req.body.competitions
 				: season.competitions;
+			season.attendancePeriods = req.body.attendancePeriods
+				? req.body.attendancePeriods
+				: season.attendancePeriods;
 		} else {
 			res.status(404);
 			throw new Error("Season not found");
