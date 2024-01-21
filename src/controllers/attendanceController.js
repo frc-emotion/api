@@ -131,10 +131,16 @@ async function getHoursFromLogs(arr) {
 }
 
 const attendMeeting = asyncHandler(async (req, res) => {
-	const { meetingId, tapTime } = req.body;
+	const { meetingId, tapTime, verifiedBy } = req.body;
 
 	const userId = req.user._id;
-	if (!meetingId || !userId || !tapTime || Number.isNaN(tapTime)) {
+	if (
+		!meetingId ||
+		!userId ||
+		!tapTime ||
+		Number.isNaN(tapTime) ||
+		!verifiedBy
+	) {
 		res.status(400).json({ message: "Please fill in all fields properly" });
 		return;
 	}
@@ -158,7 +164,19 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				return;
 			}
 
-			const att = {};
+			//#region migration
+			/**
+			 * @typedef {Object} Log
+			 * @property {string} meetingId
+			 * @property {string | null} verifiedBy
+			 */
+
+			/**
+			 * @type {Record<string, {totalHoursLogged: number, logs: Log[] | string[], completedMarketingAssignment: boolean}>}
+			 */
+			const att = {
+				...(Array.isArray(user.attendance) ? {} : user.attendance),
+			};
 			const compat = ["2023fall", "2024spring"];
 			if (Array.isArray(user.attendance)) {
 				for (let i = 0; i < user.attendance.length; i++) {
@@ -168,8 +186,21 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				}
 			}
 
+			Object.values(att).forEach((a, i) => {
+				a.logs.forEach((l, j) => {
+					if (!l.meetingId) {
+						att[Object.keys(att)[i]].logs[j] = {
+							meetingId: l,
+							verifiedBy: "unknown",
+						};
+					}
+				});
+			});
+			//#endregion
+
 			if (
 				att[meeting.attendancePeriod]?.logs?.includes(meetingId) == true
+				|| att[meeting.attendancePeriod]?.logs?.some(l => l.meetingId === meetingId) == true
 			) {
 				res.status(400).json({
 					message: "You have already logged this meeting",
@@ -182,7 +213,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				hoursLogged = Number(
 					meeting.value +
 						(await getHoursFromLogs(
-							att[meeting.attendancePeriod]?.logs
+							att[meeting.attendancePeriod]?.logs.map(l => l?.meetingId ?? l)
 						))
 				);
 			} else {
@@ -193,7 +224,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				totalHoursLogged: hoursLogged,
 				logs: [
 					...(att[meeting.attendancePeriod]?.logs ?? []),
-					meetingId,
+					{meetingId, verifiedBy},
 				],
 				completedMarketingAssignment:
 					att[meeting.attendancePeriod]
