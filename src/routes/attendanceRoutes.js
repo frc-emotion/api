@@ -6,6 +6,7 @@ const {
 	getMeetings,
 	deleteMeeting,
 	getAllMeetings,
+	archiveMeeting,
 } = require("../controllers/attendanceController");
 const protect = require("../middleware/authMiddleware");
 
@@ -14,5 +15,6 @@ router.post("/attendMeeting", protect(0, attendMeeting));
 router.get("/getMeetings", protect(2, getMeetings));
 router.delete("/deleteMeeting/:id", protect(3, deleteMeeting));
 router.get("/getAll", protect(3, getAllMeetings));
+router.put("/archiveMeeting/:id", protect(3, archiveMeeting));
 
 module.exports = router;

@@ -27,6 +27,7 @@ const meetingSchema = mongoose.Schema({
 	value: { type: Number, required: true }, // number of hours the meeting is worth (default 1 for meetings, 4 for competitions)
 	createdBy: { type: String, required: true }, // username of the user who created the meeting
 	attendancePeriod: { type: String, required: true }, // the attendance period the meeting is in, format is yearPeriod (ex. 2023fall)
+	isArchived: { type: Boolean, required: false, default: false },
 });
 
 module.exports = global.usersDb.model("Meeting", meetingSchema);

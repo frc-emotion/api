@@ -38,6 +38,7 @@ const createMeeting = asyncHandler(async (req, res) => {
 			value,
 			createdBy,
 			attendancePeriod,
+			isArchived: false,
 		});
 
 		if (meeting) {
@@ -72,7 +73,7 @@ const getMeetings = asyncHandler(async (req, res) => {
 		}
 	} catch (e) {
 		console.error(e);
-		res.status(500).json({ message: "Error" });
+		res.status(500).json({ message: "Server Error" });
 		return;
 	}
 });
@@ -88,7 +89,28 @@ const getAllMeetings = asyncHandler(async (req, res) => {
 		}
 	} catch (e) {
 		console.error(e);
-		res.status(500).json({ message: "Error" });
+		res.status(500).json({ message: "Server Error" });
+		return;
+	}
+});
+
+const archiveMeeting = asyncHandler(async (req, res) => {
+	try {
+		const id = req.params.id;
+		const meeting = await Meeting.findById(id);
+		if (!meeting) {
+			res.status(404).json({ message: "Meeting not found" });
+			return;
+		}
+		meeting.isArchived = !meeting.isArchived;
+		const archived = meeting.isArchived === true;
+		meeting.save();
+		res.status(201).json({
+			message: archived ? "Meeting Archived" : "Meeting Unarchived",
+		});
+	} catch {
+		console.error(e);
+		res.status(500).json({ message: "Server Error" });
 		return;
 	}
 });
@@ -199,8 +221,11 @@ const attendMeeting = asyncHandler(async (req, res) => {
 			//#endregion
 
 			if (
-				att[meeting.attendancePeriod]?.logs?.includes(meetingId) == true
-				|| att[meeting.attendancePeriod]?.logs?.some(l => l.meetingId === meetingId) == true
+				att[meeting.attendancePeriod]?.logs?.includes(meetingId) ==
+					true ||
+				att[meeting.attendancePeriod]?.logs?.some(
+					(l) => l.meetingId === meetingId
+				) == true
 			) {
 				res.status(400).json({
 					message: "You have already logged this meeting",
@@ -213,7 +238,9 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				hoursLogged = Number(
 					meeting.value +
 						(await getHoursFromLogs(
-							att[meeting.attendancePeriod]?.logs.map(l => l?.meetingId ?? l)
+							att[meeting.attendancePeriod]?.logs.map(
+								(l) => l?.meetingId ?? l
+							)
 						))
 				);
 			} else {
@@ -224,7 +251,7 @@ const attendMeeting = asyncHandler(async (req, res) => {
 				totalHoursLogged: hoursLogged,
 				logs: [
 					...(att[meeting.attendancePeriod]?.logs ?? []),
-					{meetingId, verifiedBy},
+					{ meetingId, verifiedBy },
 				],
 				completedMarketingAssignment:
 					att[meeting.attendancePeriod]
@@ -274,4 +301,5 @@ module.exports = {
 	getMeetings,
 	deleteMeeting,
 	getAllMeetings,
+	archiveMeeting,
 };
