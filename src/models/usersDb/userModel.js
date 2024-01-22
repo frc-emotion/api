@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema(
 		socials: { type: Array, required: false },
 
 		parents: { type: Array, required: false },
-		attendance: { type: Object, required: false }, //map of string to attendance object
+		attendance: { type: Object, required: true, default: {} }, //map of string to attendance object
 
 		children: { type: Array, required: false },
 		spouse: { type: Object, required: false },
