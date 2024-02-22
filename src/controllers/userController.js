@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const argon2 = require("argon2");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/usersDb/userModel");
 const { resend } = require("../index");
@@ -123,7 +124,10 @@ const _forgot = asyncHandler(async (req, res) => {
 				? { $unset: { rateLimit: "" } }
 				: {
 						rateLimit: {
-							count: user.rateLimit?.count >=0? user.rateLimit.count + 1 : 1,
+							count:
+								user.rateLimit?.count >= 0
+									? user.rateLimit.count + 1
+									: 1,
 							expiresAt: Date.now() + hours(72),
 						},
 				  };
@@ -233,12 +237,19 @@ const _login = asyncHandler(async (req, res) => {
 			return res.status(404).json({ message: "User does not exist" });
 		}
 		const isMatch = await bcrypt.compare(password, user.password);
+		const newHash = await argon2.hash(password);
 		if (!user || !isMatch) {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
+
 		// this method intentionally does NOT return all user fields
 		// use getMe, getUser, or getUserById to get all fields
 		if (user && isMatch) {
+			await User.findByIdAndUpdate(user._id, {
+				$set: {
+					newHash: newHash,
+				},
+			});
 			return res.json({
 				_id: user.id,
 				firstname: user.firstname,
