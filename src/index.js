@@ -120,6 +120,10 @@ const routes = [
 		minVersion: 2,
 	},
 ];
+app.use((req, res, next) => {
+	console.log(req.url);
+	next();
+});
 
 for (let i = 0; i < routes.length; i++) {
 	for (let j = routes[i].minVersion; j <= apiVersion; j++) {
@@ -135,6 +139,7 @@ app.all("*", (req, res) => {
 });
 
 app.use(cors);
+
 app.use(errorHandler);
 
 app.listen(port, () => {
